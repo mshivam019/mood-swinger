@@ -1,12 +1,12 @@
 import { Disclosure } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import React from "react";
-import logo from "../assets/logo.png"
+import logo from "../assets/logo.png";
 import { Link, NavLink } from "react-router-dom";
 
 function Navbar(props) {
   return (
-    <div>
+    <div classame="bg-white dark:bg-gray-900">
       <Disclosure
         as="nav"
         className="fixed z-20 w-full bg-white/90 dark:bg-gray-900/80 backdrop-blur navbar shadow-2xl shadow-gray-600/5 border-b border-gray-100 dark:border-gray-800 peer-checked:navbar-active dark:shadow-none"
@@ -33,7 +33,7 @@ function Navbar(props) {
                       className="h-6 mr-3 sm:h-9"
                       alt="Flowbite Logo"
                     />
-                     <Link to="/">
+                    <Link to="/">
                       <div className="block h-8 w-auto text-black lg:hidden dark:text-white text-2xl font-semibold cursor-pointer">
                         Mood Swinger
                       </div>
@@ -60,10 +60,10 @@ function Navbar(props) {
                 </div>
                 <div className="absolute inset-y-0 right-0 flex items-center sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                   <NavLink
-                    to="/login"
+                    to={props.btnurl}
                     className="md:flex hidden text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                   >
-                    Get started
+                    {props.btn}
                   </NavLink>
                 </div>
               </div>
@@ -83,11 +83,10 @@ function Navbar(props) {
                   </Disclosure.Button>
                 ))}
                 <NavLink
-                  
-                  to="/login"
+                  to={props.btnurl}
                   className="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                 >
-                  Get started
+                  {props.btn}
                 </NavLink>
               </div>
             </Disclosure.Panel>

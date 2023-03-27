@@ -3,7 +3,7 @@ import mood from "../assets/mood.png";
 import "../index.css";
 function Hero() {
   return (
-    <div>
+    <div className="bg-white dark:bg-gray-900">
       <div className="bg-white relative pt-40 pb-20 lg:pt-44 dark:bg-gray-900">
         <div className="relative xl:container m-auto px-6 md:px-12 lg:px-6">
           <h1 className="sm:mx-auto sm:w-10/12 md:w-2/3 font-black text-blue-900 text-4xl text-center sm:text-5xl md:text-6xl lg:w-auto lg:text-left xl:text-7xl dark:text-white">
@@ -121,13 +121,14 @@ function Hero() {
         </div>
       </div>
       <div className="block stroke-transparent stroke-0 ">
-      
-      <svg viewBox="0 0 1440 319" className="dark:fill-white fill-gray-900">
-    <path fillOpacity="1" d="M0,32L48,80C96,128,192,224,288,224C384,224,480,128,576,90.7C672,53,768,75,864,96C960,117,1056,139,1152,149.3C1248,160,1344,160,1392,160L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
-  </svg>
-  </div>
+        <svg viewBox="0 0 1440 319" className="dark:fill-white fill-gray-900">
+          <path
+            fillOpacity="1"
+            d="M0,32L48,80C96,128,192,224,288,224C384,224,480,128,576,90.7C672,53,768,75,864,96C960,117,1056,139,1152,149.3C1248,160,1344,160,1392,160L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
+          ></path>
+        </svg>
+      </div>
     </div>
-    
   );
 }
 
