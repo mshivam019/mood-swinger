@@ -1,5 +1,7 @@
 import React from "react";
 import mood from "../assets/mood.png";
+import fire from "../assets/firebase.png";
+import rec from "../assets/react.png";
 import "../index.css";
 function Hero() {
   return (
@@ -7,97 +9,61 @@ function Hero() {
       <div className="bg-white relative pt-40 pb-20 lg:pt-44 dark:bg-gray-900">
         <div className="relative xl:container m-auto px-6 md:px-12 lg:px-6">
           <h1 className="sm:mx-auto sm:w-10/12 md:w-2/3 font-black text-blue-900 text-4xl text-center sm:text-5xl md:text-6xl lg:w-auto lg:text-left xl:text-7xl dark:text-white">
-            Run successful remote and <br className="lg:block hidden" />{" "}
+            Track your emotions with <br className="lg:block hidden" />
             <span className="relative text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500 dark:from-blue-400 dark:to-cyan-300">
-              Hybrid teams
+              Mood Swinger
             </span>
             .
           </h1>
           <div className="lg:flex">
             <div className="relative mt-8 md:mt-16 space-y-8 sm:w-10/12 md:w-2/3 lg:ml-0 sm:mx-auto text-center lg:text-left lg:mr-auto lg:w-7/12">
               <p className="sm:text-lg text-gray-700 dark:text-gray-300 lg:w-11/12">
-                DailyBot takes chat and collaboration to the next level: daily
-                standups, team check-ins, surveys, kudos, best companion bot for
-                your virtual watercooler, 1:1 intros, motivation tracking and
-                more.
+                Mood Swinger is a powerful mood tracking app that helps you
+                understand your emotions and improve your mental wellbeing.
+                Track your moods, set reminders, and gain insights into your
+                emotional patterns.
               </p>
               <span className="block font-semibold text-gray-500 dark:text-gray-400">
-                The best companion bot for your chat app.
+                Take control of your mental health with Mood Swinger.
               </span>
               <div className="grid grid-cols-3 space-x-4 md:space-x-6 md:flex md:justify-center lg:justify-start">
-                <a
-                  aria-label="add to slack"
-                  href="#"
-                  className="p-4 border border-gray-200 dark:bg-gray-800 dark:border-gray-700 rounded-full duration-300 hover:border-cyan-400 hover:shadow-lg hover:shadow-cyan-600/20 dark:hover:border-cyan-300/30"
-                >
+                <a className="p-4 border border-gray-200 dark:bg-gray-800 dark:border-gray-700 rounded-full duration-300 hover:border-cyan-400 hover:shadow-lg hover:shadow-cyan-600/20 dark:hover:border-cyan-300/30">
                   <div className="flex justify-center space-x-4">
                     <img
                       className="w-6 h-6"
-                      src="https://tailus.io/sources/blocks/tech-startup/preview/images/slack.png"
-                      alt="slack logo"
+                      src={rec}
+                      alt="react logo"
                       loading="lazy"
                       width="128"
                       height="128"
                     />
                     <span className="hidden font-medium md:block dark:text-white">
-                      Slack
+                      React
                     </span>
                   </div>
                 </a>
-                <a
-                  aria-label="add to chat"
-                  href="#"
-                  className="p-4 border border-gray-200 dark:bg-gray-800  dark:border-gray-700 rounded-full duration-300 hover:border-green-400 hover:shadow-lg hover:shadow-lime-600/20 dark:hover:border-green-300/30"
-                >
+                <a className="p-4 border border-gray-200 dark:bg-gray-800  dark:border-gray-700 rounded-full duration-300 hover:border-green-400 hover:shadow-lg hover:shadow-lime-600/20 dark:hover:border-green-300/30">
                   <div className="flex justify-center space-x-4">
                     <img
                       className="w-6 h-6"
-                      src="https://tailus.io/sources/blocks/tech-startup/preview/images/chat.png"
-                      alt="chat logo"
+                      src={fire}
+                      alt="firebase logo"
                       loading="lazy"
                       width="128"
                       height="128"
                     />
                     <span className="hidden font-medium md:block dark:text-white">
-                      Google Chat
-                    </span>
-                  </div>
-                </a>
-                <a
-                  aria-label="add to zoom"
-                  href="#"
-                  className="p-4 border border-gray-200 dark:bg-gray-800  dark:border-gray-700 rounded-full duration-300 hover:border-blue-400 hover:shadow-lg hover:shadow-blue-600/20 dark:hover:border-blue-300/30"
-                >
-                  <div className="flex justify-center space-x-4">
-                    <img
-                      className="w-6 h-6"
-                      src="https://tailus.io/sources/blocks/tech-startup/preview/images/zoom.png"
-                      alt="chat logo"
-                      loading="lazy"
-                      width="128"
-                      height="128"
-                    />
-                    <span className="hidden font-medium md:block dark:text-white">
-                      Zoom
+                      Firebase
                     </span>
                   </div>
                 </a>
               </div>
 
               <div className="dark:text-gray-300">
-                🔥🌟
-                <span>Other integrations :</span>
-                <a
-                  href="#"
-                  className="font-semibold text-gray-700 dark:text-gray-200"
-                >
-                  Discord,
-                </a>
-                <a
-                  href="#"
-                  className="font-semibold text-gray-700 dark:text-gray-200"
-                >
-                  Telegram
+                ❤️
+                <span>Made with Love in </span>
+                <a className="font-semibold text-gray-700 dark:text-gray-200">
+                  India
                 </a>
               </div>
             </div>

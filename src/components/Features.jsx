@@ -1,9 +1,11 @@
 import React from "react";
 import {
-  MicrophoneIcon,
   ChartBarIcon,
   ChartPieIcon,
-  Square3Stack3DIcon,
+  ShieldCheckIcon,
+  GlobeAltIcon,
+  NewspaperIcon,
+  SquaresPlusIcon,
 } from "@heroicons/react/24/outline";
 function Features() {
   return (
@@ -16,26 +18,27 @@ function Features() {
         <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
           <div className="text-center">
             <h2 className="text-3xl font-bold leading-tight dark:text-gray-900  text-gray-400 sm:text-4xl xl:text-5xl font-pj">
-              Make every step user-centric
+              Make every day count
             </h2>
             <p className="mt-4 text-base leading-7 dark:text-gray-600  text-gray-400  sm:mt-8 font-pj">
-              Lorem ipsum dolor sit amet, consectetur adipis elit
+              Track your mood, find your balance
             </p>
           </div>
 
           <div className="grid grid-cols-1 mt-10 text-center sm:mt-16 sm:grid-cols-2 sm:gap-x-12 gap-y-12 md:grid-cols-3 md:gap-0 xl:mt-24">
             <div className="md:p-8 lg:p-14">
-              <MicrophoneIcon
+              <ShieldCheckIcon
                 className="mx-auto dark:text-gray-900  text-gray-400"
                 width="46"
                 height="46"
               />
               <h3 className="mt-12 text-xl font-bold dark:text-gray-900 text-gray-400 font-pj">
-                Support
+                Security
               </h3>
               <p className="mt-5 text-base dark:text-gray-600  text-gray-400  font-pj">
-                Lorem ipsum dolor sit amet, consectetur adipis elit. Sit enim
-                nec, proin faucibus nibh et sagittis a. Lacinia purus ac amet.
+                Mood Swinger prioritizes user privacy and security, ensuring
+                that all data is kept confidential and secure. All data is
+                stored securely in the cloud.
               </p>
             </div>
 
@@ -46,56 +49,60 @@ function Features() {
                 height="46"
               />
               <h3 className="mt-12 text-xl font-bold dark:text-gray-900 text-gray-400 font-pj">
-                Support
+                Analytics
               </h3>
               <p className="mt-5 text-base dark:text-gray-600  text-gray-400  font-pj">
-                Lorem ipsum dolor sit amet, consectetur adipis elit. Sit enim
-                nec, proin faucibus nibh et sagittis a. Lacinia purus ac amet.
+                Mood Swinger provides valuable insights and analytics on your
+                mood over time, helping you identify patterns and make informed
+                decisions about your mental health.
               </p>
             </div>
 
             <div className="md:p-8 lg:p-14 md:border-l md:border-gray-200">
-              <ChartBarIcon
+              <GlobeAltIcon
                 className="mx-auto dark:text-gray-900  text-gray-400"
                 width="46"
                 height="46"
               />
               <h3 className="mt-12 text-xl font-bold dark:text-gray-900 text-gray-400 font-pj">
-                Support
+                Accessibility
               </h3>
               <p className="mt-5 text-base dark:text-gray-600  text-gray-400  font-pj">
-                Lorem ipsum dolor sit amet, consectetur adipis elit. Sit enim
-                nec, proin faucibus nibh et sagittis a. Lacinia purus ac amet.
+                Mood Swinger is a web-based application that can be accessed on
+                any device with an internet connection, making it easy to track
+                and manage moods on-the-go.
               </p>
             </div>
 
             <div className="md:p-8 lg:p-14 md:border-t md:border-gray-200">
-              <ChartBarIcon
+              <NewspaperIcon
                 className="mx-auto dark:text-gray-900  text-gray-400"
                 width="46"
                 height="46"
               />
               <h3 className="mt-12 text-xl font-bold dark:text-gray-900 text-gray-400 font-pj">
-                Support
+                Journal
               </h3>
               <p className="mt-5 text-base dark:text-gray-600  text-gray-400  font-pj">
-                Lorem ipsum dolor sit amet, consectetur adipis elit. Sit enim
-                nec, proin faucibus nibh et sagittis a. Lacinia purus ac amet.
+                Users can create a personalized mood journal that allows them to
+                identify patterns and gain insights into their emotional
+                well-being over time.
               </p>
             </div>
 
             <div className="md:p-8 lg:p-14 md:border-l md:border-gray-200 md:border-t">
-              <ChartBarIcon
+              <SquaresPlusIcon
                 className="mx-auto dark:text-gray-900  text-gray-400"
                 width="46"
                 height="46"
               />
               <h3 className="mt-12 text-xl font-bold dark:text-gray-900 text-gray-400 font-pj">
-                Support
+                Open Source
               </h3>
               <p className="mt-5 text-base dark:text-gray-600  text-gray-400  font-pj">
-                Lorem ipsum dolor sit amet, consectetur adipis elit. Sit enim
-                nec, proin faucibus nibh et sagittis a. Lacinia purus ac amet.
+                As an open-source project, Mood Swinger welcomes contributions
+                from the community, allowing developers to customize and extend
+                its functionality to suit their needs.
               </p>
             </div>
 
@@ -106,11 +113,12 @@ function Features() {
                 height="46"
               />
               <h3 className="mt-12 text-xl font-bold dark:text-gray-900 text-gray-400 font-pj">
-                Support
+                Visualization
               </h3>
               <p className="mt-5 text-base dark:text-gray-600  text-gray-400  font-pj">
-                Lorem ipsum dolor sit amet, consectetur adipis elit. Sit enim
-                nec, proin faucibus nibh et sagittis a. Lacinia purus ac amet.
+                Mood Swinger provides easy-to-read data visualization that allow
+                users to gain a better understanding of their mood patterns and
+                trends.
               </p>
             </div>
           </div>

@@ -8,7 +8,7 @@ function Testi() {
           <div className="flex flex-col items-center">
             <div className="text-center">
               <p className="text-lg font-medium dark:text-gray-900 text-gray-500 font-pj">
-                2,157 people have said how good Rareblocks
+                2,157 people have said how good Mood Swinger is
               </p>
               <h2 className="mt-4 text-3xl font-bold dark:text-gray-900 text-gray-400 sm:text-4xl xl:text-5xl font-pj">
                 Our happy clients say about us
@@ -75,9 +75,13 @@ function Testi() {
 
                       <blockquote className="flex-1 mt-8">
                         <p className="text-lg leading-relaxed text-gray-900 font-pj">
-                          “You made it so simple. My new site is so much faster
-                          and easier to work with than my old site. I just
-                          choose the page, make the change.”
+                          “Mood Swinger is an intuitive and user-friendly tool
+                          that has helped me prioritize my mental health. I love
+                          being able to customize my mood journal and set
+                          reminders to check in on my emotions throughout the
+                          day. It's helped me gain insight into my emotional
+                          well-being and take steps towards a more balanced and
+                          fulfilling life.”
                         </p>
                       </blockquote>
                     </div>
@@ -92,9 +96,6 @@ function Testi() {
                         <p className="text-base font-bold text-gray-900 font-pj">
                           Leslie Alexander
                         </p>
-                        <p className="mt-0.5 text-sm font-pj text-gray-600">
-                          Freelance React Developer
-                        </p>
                       </div>
                     </div>
                   </div>
@@ -148,9 +149,12 @@ function Testi() {
 
                       <blockquote className="flex-1 mt-8">
                         <p className="text-lg leading-relaxed text-gray-900 font-pj">
-                          “Simply the best. Better than all the rest. I’d
-                          recommend this product to beginners and advanced
-                          users.”
+                          “I've been using Mood Swinger for a few weeks now and
+                          it's been a game-changer for me. Before, I never
+                          really paid attention to my moods, but now I can see
+                          patterns and make adjustments in my life. It's helped
+                          me feel more in control and proactive about my mental
+                          health.”
                         </p>
                       </blockquote>
                     </div>
@@ -165,9 +169,6 @@ function Testi() {
                         <p className="text-base font-bold text-gray-900 font-pj">
                           Jacob Jones
                         </p>
-                        <p className="mt-0.5 text-sm font-pj text-gray-600">
-                          Digital Marketer
-                        </p>
                       </div>
                     </div>
                   </div>
@@ -221,9 +222,13 @@ function Testi() {
 
                       <blockquote className="flex-1 mt-8">
                         <p className="text-lg leading-relaxed text-gray-900 font-pj">
-                          “I cannot believe that I have got a brand new landing
-                          page after getting Omega. It was super easy to edit
-                          and publish.”
+                          “As someone who struggles with anxiety, Mood Swinger
+                          has been incredibly helpful in identifying triggers
+                          and patterns in my mood. I love being able to track my
+                          emotions throughout the day and see how they change
+                          over time. It's made me more aware of how I'm feeling
+                          and helped me develop strategies for managing my
+                          anxiety.”
                         </p>
                       </blockquote>
                     </div>
@@ -237,9 +242,6 @@ function Testi() {
                       <div className="ml-4">
                         <p className="text-base font-bold text-gray-900 font-pj">
                           Jenny Wilson
-                        </p>
-                        <p className="mt-0.5 text-sm font-pj text-gray-600">
-                          Graphic Designer
                         </p>
                       </div>
                     </div>
