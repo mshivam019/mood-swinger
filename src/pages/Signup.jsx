@@ -1,28 +1,34 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 import Footer from "../components/Footer";
 import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
 import Navbar from "../components/Navbar";
-import { NavLink } from "react-router-dom";
-import { auth } from '../firebase';
+import { NavLink, useNavigate } from "react-router-dom";
+import { auth } from "../firebase";
 import { getError } from "../utils/error";
-import { createUserWithEmailAndPassword,signInWithPopup,GoogleAuthProvider } from "firebase/auth";
+import startup from "../assets/startup.png";
+import {
+  createUserWithEmailAndPassword,
+  signInWithPopup,
+  GoogleAuthProvider,
+} from "firebase/auth";
+import Loading from "../components/Loading";
 
 function Signup() {
   const provider = new GoogleAuthProvider();
-
-  const [loading, setLoading] = useState(true);
+  const navigateTo = useNavigate();
+  const [loading, setLoading] = useState(false);
   const handleSignInWithGoogle = async () => {
     setLoading(true);
     try {
-      const res = await signInWithPopup(auth,provider);
+      const res = await signInWithPopup(auth, provider);
       const user = res.user;
       console.log(user);
-      // navigate to dashboard
-      setLoading(false);
-    } 
-    catch (err) {
+      navigateTo("/dashboard");
+    } catch (err) {
       toast.error(getError(err));
+    } finally {
+      setLoading(false);
     }
   };
   let props = {
@@ -37,18 +43,22 @@ function Signup() {
     formState: { errors },
   } = useForm();
   const submitHandler = async ({ email, password }) => {
-    
+    setLoading(true);
     try {
-      const result = await createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-          // Signed in
-          const user = userCredential.user;
-          console.log(user);
-          // navigate to dashboard
-      })
-      setLoading(false);
+      const result = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      ).then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        console.log(user);
+        navigateTo("/dashboard");
+      });
     } catch (err) {
       toast.error(getError(err));
+    } finally {
+      setLoading(false);
     }
     return loading;
   };
@@ -56,11 +66,11 @@ function Signup() {
     <div>
       <Navbar {...props} />
       <div className="flex flex-col md:flex-row">
-        <div className="w-full hidden lg:block md:w-1/2 bg-white relative">
+        <div className="w-full hidden lg:block md:w-1/2 dark:bg-white bg-gray-900 relative">
           <div className="md:5/12 lg:w-5/12">
             <img
-              className="absolute mt-20"
-              src="https://tailus.io/sources/blocks/left-image/preview/images/startup.png"
+              className="absolute dark:bg-white bg-gray-900 mt-20"
+              src={startup}
               alt="image"
               loading="lazy"
               width=""
@@ -69,7 +79,7 @@ function Signup() {
           </div>
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="absolute right-0 scale-25 -mr-0.5 fill-gray-900"
+            className="absolute right-0 scale-25 -mr-0.5 fill-white dark:fill-gray-900"
             width="1080"
             height="920"
           >
@@ -130,7 +140,12 @@ function Signup() {
                 )}
               </div>
               <div className="mb-4 text-gray-900">
-                <label htmlFor="password">Password</label>
+                <label
+                  className="dark:text-white text-gray-900"
+                  htmlFor="password"
+                >
+                  Password
+                </label>
                 <input
                   type="password"
                   placeholder="Enter your password"
@@ -150,7 +165,12 @@ function Signup() {
                 )}
               </div>
               <div className="mb-4 text-gray-900">
-                <label htmlFor="confirmPassword">Confirm Password</label>
+                <label
+                  className="dark:text-white text-gray-900"
+                  htmlFor="confirmPassword"
+                >
+                  Confirm Password
+                </label>
                 <input
                   className="lg:w-6/12  w-8/12 block dark:border-gray-700 border rounded-md pl-10 pr-4 py-2 focus:border-blue-500 focus:outline-none focus:shadow-outline"
                   type="password"
@@ -175,16 +195,26 @@ function Signup() {
                     <div className="text-red-500 ">Password do not match</div>
                   )}
               </div>
-
-              <div className="mb-4 flex flex-row">
-                <button className="ml-3 flex items-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                  Register
-                </button>
-                <button onClick={handleSignInWithGoogle} className="ml-3 flex items-center text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
-      Sign in with Google
-    </button>
+              <div className="mb-4">
+                {loading ? (
+                  <div className="lg:w-6/12  w-8/12">
+                    {" "}
+                    <Loading />
+                  </div>
+                ) : (
+                  <div className="flex flex-row">
+                    <button className="ml-3 flex items-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                      Register
+                    </button>
+                    <button
+                      onClick={handleSignInWithGoogle}
+                      className="ml-3 flex items-center text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+                    >
+                      Sign in with Google
+                    </button>
+                  </div>
+                )}
               </div>
-              
               <div className="dark:text-white text-gray-900">
                 already have an account? &nbsp;
                 <NavLink

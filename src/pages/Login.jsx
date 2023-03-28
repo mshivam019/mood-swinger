@@ -1,26 +1,33 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 import Footer from "../components/Footer";
 import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
 import Navbar from "../components/Navbar";
-import { NavLink } from "react-router-dom";
-import { auth } from '../firebase';
+import { NavLink, useNavigate } from "react-router-dom";
+import { auth } from "../firebase";
 import { getError } from "../utils/error";
-import { signInWithEmailAndPassword,signInWithPopup,GoogleAuthProvider } from "firebase/auth";
+import startup from "../assets/startup.png";
+import {
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  GoogleAuthProvider,
+} from "firebase/auth";
+
+import Loading from "../components/Loading";
 function Login() {
+  const navigateTo = useNavigate();
   const provider = new GoogleAuthProvider();
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const handleSignInWithGoogle = async () => {
     setLoading(true);
     try {
-      const res = await signInWithPopup(auth,provider);
+      const res = await signInWithPopup(auth, provider);
       const user = res.user;
       console.log(user);
-      // navigate to dashboard
+      navigateTo("/dashboard");
       setLoading(false);
-    } 
-    catch (err) {
+    } catch (err) {
       toast.error(getError(err));
     }
   };
@@ -37,13 +44,16 @@ function Login() {
   const submitHandler = async ({ email, password }) => {
     setLoading(true);
     try {
-      const result = await signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-          // Signed in
-          const user = userCredential.user;
-          console.log(user);
-          // navigate to dashboard
-      })
+      const result = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      ).then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        console.log(user);
+        navigateTo("/dashboard");
+      });
       setLoading(false);
     } catch (err) {
       toast.error(getError(err));
@@ -54,11 +64,11 @@ function Login() {
     <div>
       <Navbar {...props} />
       <div className="flex flex-col md:flex-row">
-        <div className="w-full hidden lg:block md:w-1/2 bg-white relative">
-          <div className="md:5/12 lg:w-5/12">
+        <div className="w-full hidden lg:block md:w-1/2 dark:bg-white bg-gray-900 relative">
+          <div className="md:5/12 dark:bg-white bg-gray-900 lg:w-5/12">
             <img
-              className="absolute mt-20"
-              src="https://tailus.io/sources/blocks/left-image/preview/images/startup.png"
+              className="absolute mt-20 ml-14"
+              src={startup}
               alt="image"
               loading="lazy"
               width=""
@@ -67,7 +77,7 @@ function Login() {
           </div>
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="absolute right-0 scale-25 -mr-0.5 fill-gray-900"
+            className="absolute right-0 scale-25 -mr-0.5 fill-white dark:fill-gray-900"
             width="1080"
             height="920"
           >
@@ -109,8 +119,13 @@ function Login() {
                   <div className="text-red-500">{errors.email.message}</div>
                 )}
               </div>
-              <div className="mb-4 dark:text-gray-900">
-                <label htmlFor="password">Password</label>
+              <div className="mb-4 ">
+                <label
+                  className="dark:text-white text-gray-900"
+                  htmlFor="password"
+                >
+                  Password
+                </label>
                 <input
                   type="password"
                   {...register("password", {
@@ -129,13 +144,25 @@ function Login() {
                   <div className="text-red-500 ">{errors.password.message}</div>
                 )}
               </div>
-              <div className="mb-4 flex flex-row">
-                <button className="ml-3 flex items-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                  Login
-                </button>
-                <button onClick={handleSignInWithGoogle} className="ml-3 flex items-center text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
-      Sign in with Google
-    </button>
+              <div className="mb-4">
+                {loading ? (
+                  <div className="lg:w-4/12 w-8/12">
+                    {" "}
+                    <Loading />
+                  </div>
+                ) : (
+                  <div className="flex flex-row">
+                    <button className=" flex items-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                      Login
+                    </button>
+                    <button
+                      onClick={handleSignInWithGoogle}
+                      className="ml-3 flex items-center text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+                    >
+                      Sign in with Google
+                    </button>
+                  </div>
+                )}
               </div>
               <div className="dark:text-white text-gray-900">
                 Don&apos;t have an account? &nbsp;

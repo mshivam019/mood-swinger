@@ -1,10 +1,70 @@
 import { Disclosure } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import React from "react";
+import { SunIcon, MoonIcon } from "@heroicons/react/24/solid";
+import React, { useState, useEffect } from "react";
+import useDarkSide from "../utils/useDarkSide";
 import logo from "../assets/logo.png";
-import { Link, NavLink } from "react-router-dom";
-
+import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
+import { auth } from "../firebase";
+import { signOut, onAuthStateChanged } from "firebase/auth";
 function Navbar(props) {
+  const navigateTo = useNavigate();
+  const location = useLocation();
+  const [t, sett] = useState(true);
+  const [colorTheme, setTheme] = useDarkSide();
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    // const user = currentUser(auth);
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUser(user);
+      } else {
+        setUser(null);
+      }
+    });
+    if (location.pathname === "/dashboard") sett(false);
+    return () => unsubscribe();
+  }, []);
+  const [darkmode, Setdarkmode] = useState(true);
+  const signout = () => {
+    console.log("works");
+    signOut(auth)
+      .then(() => {
+        navigateTo("/");
+      })
+      .catch((error) => {
+        // An error happened.
+        console.error(error);
+      });
+  };
+  const toggleDarkMode = () => {
+    if (darkmode === false) {
+      setTheme("dark");
+      Setdarkmode(true);
+    } else {
+      setTheme("light");
+      Setdarkmode(false);
+    }
+  };
+  const renderThemeChanger = () => {
+    if (darkmode) {
+      return (
+        <SunIcon
+          className="w-6 h-6 pr-1 text-yellow-500 "
+          role="button"
+          onClick={() => toggleDarkMode()}
+        />
+      );
+    } else {
+      return (
+        <MoonIcon
+          className="w-6 h-6 pr-1 text-gray-900 "
+          role="button"
+          onClick={() => toggleDarkMode()}
+        />
+      );
+    }
+  };
   return (
     <div classame="bg-white dark:bg-gray-900">
       <Disclosure
@@ -45,6 +105,15 @@ function Navbar(props) {
                   </div>
                   <div className="hidden sm:ml-6 sm:block">
                     <div className="flex space-x-4">
+                      {user && t && (
+                        <NavLink
+                          to="/dashboard"
+                          className=" text-gray-700 hover:bg-gray-100  dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white  dark:border-gray-700
+                        block px-3 py-2 rounded-md text-base font-medium"
+                        >
+                          Dashboard
+                        </NavLink>
+                      )}
                       {props.navigation.map((item) => (
                         <a
                           key={item.name}
@@ -59,18 +128,37 @@ function Navbar(props) {
                   </div>
                 </div>
                 <div className="absolute inset-y-0 right-0 flex items-center sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                  <NavLink
-                    to={props.btnurl}
-                    className="md:flex hidden text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                  >
-                    {props.btn}
-                  </NavLink>
+                  {renderThemeChanger()}
+                  {user ? (
+                    <button
+                      onClick={signout}
+                      className="md:flex hidden text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
+                    >
+                      Log out
+                    </button>
+                  ) : (
+                    <NavLink
+                      to={props.btnurl}
+                      className="md:flex hidden text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                    >
+                      {props.btn}
+                    </NavLink>
+                  )}
                 </div>
               </div>
             </div>
 
             <Disclosure.Panel className="sm:hidden">
               <div className="space-y-1 px-2 pt-2 pb-3">
+                {user && t && (
+                  <NavLink
+                    to="/dashboard"
+                    className=" text-gray-700 hover:bg-gray-100  dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white  dark:border-gray-700
+                          block px-3 py-2 rounded-md text-base font-medium"
+                  >
+                    Dashboard
+                  </NavLink>
+                )}
                 {props.navigation.map((item) => (
                   <Disclosure.Button
                     key={item.name}
@@ -82,12 +170,21 @@ function Navbar(props) {
                     {item.name}
                   </Disclosure.Button>
                 ))}
-                <NavLink
-                  to={props.btnurl}
-                  className="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                >
-                  {props.btn}
-                </NavLink>
+                {user ? (
+                  <button
+                    onClick={signout}
+                    className="block text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
+                  >
+                    {props.btn}
+                  </button>
+                ) : (
+                  <NavLink
+                    to={props.btnurl}
+                    className="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                  >
+                    {props.btn}
+                  </NavLink>
+                )}
               </div>
             </Disclosure.Panel>
           </>
