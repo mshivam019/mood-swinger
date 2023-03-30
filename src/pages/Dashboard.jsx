@@ -364,7 +364,7 @@ function IconButton({
   );
   useEffect(() => {
     const getmoods = async () => {
-      const data = await getDocs(moodsCollection,q);
+      const data = await getDocs(q);
       setMoods(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     };
 
