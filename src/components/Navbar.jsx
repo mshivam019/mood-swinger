@@ -27,7 +27,7 @@ function Navbar(props) {
   }, []);
   const [darkmode, Setdarkmode] = useState(true);
   const signout = () => {
-    console.log("works");
+   
     signOut(auth)
       .then(() => {
         navigateTo("/");
@@ -50,7 +50,7 @@ function Navbar(props) {
     if (darkmode) {
       return (
         <SunIcon
-          className="w-6 h-6 pr-1 text-yellow-500 "
+          className="w-6 h-6  text-yellow-500 "
           role="button"
           onClick={() => toggleDarkMode()}
         />
@@ -58,7 +58,7 @@ function Navbar(props) {
     } else {
       return (
         <MoonIcon
-          className="w-6 h-6 pr-1 text-gray-900 "
+          className="w-6 h-6  text-gray-900 "
           role="button"
           onClick={() => toggleDarkMode()}
         />
@@ -136,7 +136,9 @@ function Navbar(props) {
                   </div>
                 </div>
                 <div className="absolute inset-y-0 right-0 flex items-center sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+                  <div className="dark:bg-zinc-700 bg-zinc-300 rounded p-2 mr-1">
                   {renderThemeChanger()}
+                  </div>
                   {user ? (
                     <button
                       onClick={signout}
@@ -183,7 +185,7 @@ function Navbar(props) {
                     onClick={signout}
                     className="block text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
                   >
-                    {props.btn}
+                    Log out
                   </button>
                 ) : (
                   <NavLink

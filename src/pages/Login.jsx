@@ -24,7 +24,7 @@ function Login() {
     try {
       const res = await signInWithPopup(auth, provider);
       const user = res.user;
-      console.log(user);
+    
       navigateTo("/dashboard");
       setLoading(false);
     } catch (err) {
@@ -51,7 +51,7 @@ function Login() {
       ).then((userCredential) => {
         // Signed in
         const user = userCredential.user;
-        console.log(user);
+        
         navigateTo("/dashboard");
       });
       setLoading(false);
@@ -64,7 +64,7 @@ function Login() {
     <div>
       <Navbar {...props} />
       <div className="flex flex-col md:flex-row">
-        <div className="w-full hidden lg:block md:w-1/2 dark:bg-white bg-gray-900 relative">
+        <div className="w-full hidden  lg:block md:w-1/2 dark:bg-white bg-gray-900 relative">
           <div className="md:5/12 dark:bg-white bg-gray-900 lg:w-5/12">
             <img
               className="absolute mt-20 ml-14"

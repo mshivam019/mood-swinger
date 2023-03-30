@@ -24,7 +24,7 @@ function Signup() {
     try {
       const res = await signInWithPopup(auth, provider);
       const user = res.user;
-      console.log(user);
+      
       navigateTo("/dashboard");
     } catch (err) {
       toast.error(getError(err));
@@ -53,7 +53,7 @@ function Signup() {
       ).then((userCredential) => {
         // Signed in
         const user = userCredential.user;
-        console.log(user);
+        
         updateProfile(user, {
           displayName: name,
         });
