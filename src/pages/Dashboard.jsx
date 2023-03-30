@@ -18,7 +18,6 @@ import {
   orderBy,
   limit,
 } from "firebase/firestore";
-import Dasher from "../components/Dasher";
 const sidebarItems = [
   [
     { id: "0", title: "Dashboard", notifications: false },
