@@ -8,6 +8,7 @@ import { auth } from "../firebase";
 import { getError } from "../utils/error";
 import startup from "../assets/startup.png";
 import {
+  updateProfile,
   createUserWithEmailAndPassword,
   signInWithPopup,
   GoogleAuthProvider,
@@ -42,7 +43,7 @@ function Signup() {
     getValues,
     formState: { errors },
   } = useForm();
-  const submitHandler = async ({ email, password }) => {
+  const submitHandler = async ({ email, password, name }) => {
     setLoading(true);
     try {
       const result = await createUserWithEmailAndPassword(
@@ -53,6 +54,9 @@ function Signup() {
         // Signed in
         const user = userCredential.user;
         console.log(user);
+        updateProfile(user, {
+          displayName: name,
+        });
         navigateTo("/dashboard");
       });
     } catch (err) {
@@ -98,11 +102,11 @@ function Signup() {
               </h1>
               <div className="mb-4">
                 <label htmlFor="name" className="dark:text-white text-gray-900">
-                  Name
+                  Full Name
                 </label>
                 <input
                   type="text"
-                  placeholder="Enter your name"
+                  placeholder="Enter your full name"
                   className="lg:w-6/12  w-8/12 block dark:border-gray-700 border rounded-md pl-10 pr-4 py-2 focus:border-blue-500 focus:outline-none focus:shadow-outline"
                   id="name"
                   autoFocus
