@@ -509,7 +509,7 @@ return (
         Pie chart
       </div>
       
-        {(moodValues > 0) ? (<div className="mx-auto " style={{ width: 275 }}>  <PieChart
+        {(moods.length > 0) ? (<div className="mx-auto " style={{ width: 275 }}>  <PieChart
           data={chartData}
           className="text-white"
           label={({ dataEntry }) => `${dataEntry.title}: ${dataEntry.value}%`}
