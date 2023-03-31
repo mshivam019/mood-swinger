@@ -8,6 +8,9 @@ import logo from "../assets/logo.png";
 import { SunIcon, MoonIcon } from "@heroicons/react/24/solid";
 import useDarkSide from "../utils/useDarkSide";
 import SidebarIcons from "../components/sideBarIcons";
+import { useCollection } from 'react-firebase-hooks/firestore';
+import "../index.css"
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import {
   collection,
   getDocs,
@@ -18,7 +21,6 @@ import {
   orderBy,
   limit,
 } from "firebase/firestore";
-import Dasher from "../components/Dasher";
 const sidebarItems = [
   [
     { id: "0", title: "Dashboard", notifications: false },
@@ -59,9 +61,8 @@ function Sidebar({ onSidebarHide, showSidebar , selected, setSelected}) {
             Mood Swinger
           </div>
           <div className="flex-grow block sm:hidden xl:block" />
-          <IconButton
-            icon="res-react-dash-sidebar-close"
-            className="block sm:hidden"
+          <XMarkIcon
+            className="block sm:hidden w-5 h-5 mt-2"
             onClick={onSidebarHide}
           />
         </div>
@@ -75,7 +76,6 @@ function Sidebar({ onSidebarHide, showSidebar , selected, setSelected}) {
             selected={selected}
           />
         ))}
-        
         
       </div>
 
@@ -168,6 +168,11 @@ function Content({ onSidebarHide, selected }) {
   }
   const [colorTheme, setTheme] = useDarkSide();
   const [darkmode, Setdarkmode] = useState(true);
+  const currentDate = new Date().toLocaleString("en-US", {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+  });
   const toggleDarkMode = () => {
     if (darkmode === false) {
       setTheme("dark");
@@ -206,15 +211,14 @@ function Content({ onSidebarHide, selected }) {
           <div className="sm:flex-grow flex justify-between">
             <div className="">
               <div className="flex items-center">
-                <div className="text-3xl font-bold text-black dark:text-white">Hello {name}!</div>
+                <div className="text-3xl font-bold text-black dark:text-white">Hello {name}! 👋</div>
               </div>
               <div className="flex items-center">
-                <div className="ml-2 text-zinc-600 dark:text-gray-400">October 26</div>
+                <div className="ml-2 text-zinc-600 dark:text-gray-400">{currentDate}</div>
               </div>
             </div>
-		          <IconButton
-              icon="res-react-dash-sidebar-open"
-              className="block sm:hidden"
+		          <Bars3Icon
+              className="block sm:hidden w-5 h-5 mt-3"
               onClick={onSidebarHide}
             />
 
@@ -245,31 +249,152 @@ function Graph() {
     </div>
   );
 }
-
 function TopCountries() {
+    const [currentMood, setCurrentMood] = useState("");
+    const [description, setDescription] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
+  
+    const handleMoodChange = (e) => {
+      setCurrentMood(e.target.value);
+    };
+  
+    const handleDescriptionChange = (e) => {
+      setDescription(e.target.value);
+    };
+  
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+  
+      if (!currentMood || !description) {
+        setErrorMessage("Please select a mood and enter a description");
+        return;
+      }
+  
+      try {
+        const moodsCollection = collection(db, "moods");
+        await addDoc(moodsCollection, {
+          mood: Number(currentMood),
+          userId: uid,
+          timestamp: serverTimestamp(),
+          description: description,
+        });
+        setCurrentMood("");
+        setDescription("");
+        setErrorMessage("");
+      } catch (error) {
+        console.error(error);
+      }
+    };
   return (
     <div className="flex p-4 flex-col h-full">
-      <div className="flex justify-between items-center">
-        <div className="text-zinc-700 dark:text-white font-bold">Moods</div>
-      </div>
-      <div className="text-zinc-600 italic dark:text-gray-200">most recently</div>
-      <dl className="text-sm text-zinc-600 dark:text-white block">
-        {moods.map((mood) => (
-          <div key={mood.id}><dt className="font-thin">{mood.mood}{" : "} {mood.description}</dt></div>
-        ))}
-      </dl>
+      
+      <form onSubmit={handleSubmit} className=" items-center justify-center">
+      <div className=" rounded-lg  p-1">
+        <h1 className="text-3xl font-medium mb-4 text-zinc-700 dark:text-white">How are you feeling?</h1>
+        <div className="flex justify-between">
+          <button
+          type="button"
+            className={`bg-gray-200 rounded-md dark:bg-zinc-800 p-1 mr-1 mood-button ${currentMood === "10" && "dark:bg-blue-300 bg-blue-300"}`}
+            value="10"
+            onClick={handleMoodChange}
+          >
+            😁
+          </button>
+          <button
+          type="button"
+            className={`bg-gray-200 rounded-md dark:bg-zinc-800 p-1 mr-1 mood-button ${currentMood === "8" && "dark:bg-blue-300 bg-blue-300"}`}
+            value="8"
+            onClick={handleMoodChange}
+          >
+            😊
+          </button>
+          <button
+          type="button"
+            className={`bg-gray-200 rounded-md dark:bg-zinc-800 p-1 mr-1 mood-button ${currentMood === "6" && "dark:bg-blue-300 bg-blue-300"}`}
+            value="6"
+            onClick={handleMoodChange}
+          >
+            🙂
+          </button>
+          <button
+          type="button"
+            className={`bg-gray-200 rounded-md dark:bg-zinc-800 p-1 mr-1 mood-button ${currentMood === "4" && "dark:bg-blue-300 bg-blue-300"}`}
+            value="4"
+            onClick={handleMoodChange}
+          >
+            😐
+          </button>
+          <button
+          type="button"
+            className={`bg-gray-200 rounded-md dark:bg-zinc-800 p-1 mr-1 mood-button ${currentMood === "2" && "dark:bg-blue-300 bg-blue-300"}`}
+            value="2"
+            onClick={handleMoodChange}
+          >
+            😔
+          </button>
+          <button
+          type="button"
+            className={`bg-gray-200 rounded-md dark:bg-zinc-800 p-1 mr-1 mood-button ${currentMood === "1" && "dark:bg-blue-300 bg-blue-300"}`}
+            value="1"
+            onClick={handleMoodChange}
+          >
+            😢
+          </button>
+        </div>
+        <div className="mt-4">
+          <label className="text-lg font-medium text-zinc-700 dark:text-white" htmlFor="description">
+            Brief description
+          </label>
+          <textarea
+            id="description"
+            className="w-full  bg-zinc-800 h-20 rounded-md border-gray-300 mt-2 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+            value={description}
+            onChange={handleDescriptionChange}
+            />
+            </div>
+            <div className="mt-4">
+            <button type="submit" className="bg-blue-600 text-white rounded-md px-4 py-2 hover:bg-blue-700">
+            Submit
+            </button>
+            {errorMessage && <p className="text-red-600 mt-2">{errorMessage}</p>}
+            </div>
+            </div>
+            </form>
       <div className="flex-grow" />
     </div>
   );
 }
 
 function Segmentation() {
+  const getEmoji = (moodValue) => {
+    switch (moodValue) {
+      case 10:
+        return "😁";
+      case 8:
+        return "😊";
+      case 6:
+        return "🙂";
+      case 4:
+        return "😐";
+      case 2:
+        return "😔";
+      case 1:
+        return "😢";
+      default:
+        return "❓";
+    }
+  };
   return (
     <div className="p-4 h-full">
       <div className="flex justify-between items-center">
-        <div className="text-zinc-700 dark:text-white font-bold">Segmentation</div>
+        <div className="text-zinc-700 dark:text-white font-bold">Moods</div>
       </div>
-      <div className="mt-3 text-zinc-600 dark:text-gray-200">Bar Graph</div>
+      <div className="-mt-1 text-zinc-600 dark:text-gray-200 italic">most recently </div>
+      <dl className="text-sm text-zinc-600 dark:text-white block ">
+        {moods.map((mood) => (
+          <div key={mood.id}><dt className="font-thin my-2">{getEmoji(mood.mood)}{" : "} {mood.description}</dt></div>
+        ))}
+      </dl>
     </div>
   );
 }
@@ -300,26 +425,10 @@ function AddComponent() {
   );
 }
 
-function IconButton({
-  onClick = () => {},
-  icon = 'options',
-  className = 'w-4 h-4',
-}) {
-  return (
-    <button onClick={onClick} type="button" className={className}>
-      <img
-        src={`https://assets.codepen.io/3685267/${icon}.svg`}
-        alt=""
-        className="w-full h-full"
-      />
-    </button>
-  );
-}
   const [user, setUser] = useState(null);
-  const [currentMood, setCurrentMood] = useState("Happy");
-  const [currentMoodDes, setCurrentMoodDes] = useState("bad day");
   const [uid, setUid] = useState(null);
   const [moods, setMoods] = useState([]);
+  const [averageMood, setAverageMood] = useState(null);
   const [name, setName] = useState(null);
   const navigateTo = useNavigate();
   const location = useLocation();
@@ -346,38 +455,41 @@ function IconButton({
     });
     return () => unsubscribe();
   }, []);
-  const storeData = async () => {
-    const docRef = await addDoc(moodsCollection, {
-      mood: currentMood,
-      userId: uid,
-      timestamp: serverTimestamp(),
-      description: currentMoodDes,
-    }).then(() => {
-      setCurrentMood("");
-      setCurrentMoodDes("");
-    });
-  };
-  const q = query(
-    moodsCollection,
-    where("userId", "==", uid),
-    orderBy("timestamp", "desc"),
-    limit(7)
-  );
-  useEffect(() => {
-    const getmoods = async () => {
-      const data = await getDocs(moodsCollection,q);
-      setMoods(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-    };
 
-    getmoods();
-  }, []);
+  const [snapshot] = useCollection(
+    query(
+      moodsCollection,
+      where('userId', '==', `${uid}`),
+      orderBy('timestamp', 'desc'),
+      limit(7)
+    )
+  );
+  
+  useEffect(() => {
+    if (snapshot) {
+      setMoods(
+        snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+      );
+      let totalMood = 0;
+      snapshot.forEach((doc) => {
+        const mood = doc.data().mood;
+        totalMood += mood;
+      });
+
+      const avgMood = totalMood / snapshot.size;
+      setAverageMood(avgMood);
+      console.log(snapshot)
+      console.log("1")
+      
+    }
+  }, [snapshot]);
   const [showSidebar, onSetShowSidebar] = useState(false);
   const [selected, setSelected] = useState("0");
 
   return (
     <div>
       <div className=" bg-white dark:bg-gray-900 min-h-screen">
-      {/* <button className=" flex items-center text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800" onClick={storeData}>Store</button> */}
+      {/*  */}
         <div className="flex bg-gray-200 dark:bg-zinc-800 text-gray-400">
       <Sidebar
         onSidebarHide={() => {
