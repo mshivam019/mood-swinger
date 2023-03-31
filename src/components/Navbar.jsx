@@ -4,6 +4,7 @@ import { SunIcon, MoonIcon } from "@heroicons/react/24/solid";
 import React, { useState, useEffect } from "react";
 import useDarkSide from "../utils/useDarkSide";
 import logo from "../assets/logo.png";
+import { PieChart, Pie, Cell, Legend, Tooltip } from 'recharts';
 import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
 import { auth } from "../firebase";
 import { signOut, onAuthStateChanged } from "firebase/auth";

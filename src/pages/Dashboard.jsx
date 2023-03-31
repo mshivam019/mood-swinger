@@ -1,6 +1,7 @@
 import { auth, db } from "../firebase";
-import { useNavigate, useLocation } from "react-router-dom";
+import {  NavLink, useNavigate, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
+import { PieChart } from 'react-minimal-pie-chart';
 import clsx from "https://cdn.skypack.dev/clsx@1.1.1";
 import React, { useState, useEffect } from "react";
 import {signOut, onAuthStateChanged } from "firebase/auth";
@@ -8,6 +9,7 @@ import logo from "../assets/logo.png";
 import { SunIcon, MoonIcon } from "@heroicons/react/24/solid";
 import useDarkSide from "../utils/useDarkSide";
 import SidebarIcons from "../components/sideBarIcons";
+import { CircularProgressbarWithChildren, buildStyles } from 'react-circular-progressbar';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import "../index.css"
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
@@ -56,10 +58,15 @@ function Sidebar({ onSidebarHide, showSidebar , selected, setSelected}) {
     >
       <div className="flex-shrink-0 overflow-hidden p-2">
         <div className="flex items-center h-full sm:justify-center xl:justify-start p-2 border-b border-solid border-gray-700">
-          <img src={logo} className="h-6 mr-3 sm:h-9" alt="Flowbite Logo" />
+        <NavLink to="/dashboard">
+          <img  src={logo} className="h-6 mr-3 sm:h-9" alt="Flowbite Logo" />
+          
+          </NavLink>
+          <NavLink to="/dashboard">
           <div className="block sm:hidden xl:block ml-2 font-bold text-xl text-black dark:text-white">
             Mood Swinger
           </div>
+          </NavLink>
           <div className="flex-grow block sm:hidden xl:block" />
           <XMarkIcon
             className="block sm:hidden w-5 h-5 mt-2"
@@ -294,7 +301,10 @@ function TopCountries() {
         <div className="flex justify-between">
           <button
           type="button"
-            className={`bg-gray-200 rounded-md dark:bg-zinc-800 p-1 mr-1 mood-button ${currentMood === "10" && "dark:bg-blue-300 bg-blue-300"}`}
+            className={clsx(
+              " dark:hover:bg-blue-200 hover:bg-blue-200 rounded-md  p-1 mr-1 ",
+              currentMood === "10" ? "dark:bg-blue-300 bg-blue-300" : " dark:bg-zinc-800 bg-gray-200"
+            )}
             value="10"
             onClick={handleMoodChange}
           >
@@ -302,7 +312,10 @@ function TopCountries() {
           </button>
           <button
           type="button"
-            className={`bg-gray-200 rounded-md dark:bg-zinc-800 p-1 mr-1 mood-button ${currentMood === "8" && "dark:bg-blue-300 bg-blue-300"}`}
+            className={clsx(
+              " dark:hover:bg-blue-200 hover:bg-blue-200 rounded-md  p-1 mr-1 ",
+              currentMood === "8" ? "dark:bg-blue-300 bg-blue-300" : " dark:bg-zinc-800 bg-gray-200"
+            )}
             value="8"
             onClick={handleMoodChange}
           >
@@ -310,7 +323,10 @@ function TopCountries() {
           </button>
           <button
           type="button"
-            className={`bg-gray-200 rounded-md dark:bg-zinc-800 p-1 mr-1 mood-button ${currentMood === "6" && "dark:bg-blue-300 bg-blue-300"}`}
+            className={clsx(
+              " dark:hover:bg-blue-200 hover:bg-blue-200 rounded-md  p-1 mr-1 ",
+              currentMood === "6" ? "dark:bg-blue-300 bg-blue-300" : " dark:bg-zinc-800 bg-gray-200"
+            )}
             value="6"
             onClick={handleMoodChange}
           >
@@ -318,7 +334,10 @@ function TopCountries() {
           </button>
           <button
           type="button"
-            className={`bg-gray-200 rounded-md dark:bg-zinc-800 p-1 mr-1 mood-button ${currentMood === "4" && "dark:bg-blue-300 bg-blue-300"}`}
+            className={clsx(
+              " dark:hover:bg-blue-200 hover:bg-blue-200 rounded-md  p-1 mr-1 ",
+              currentMood === "4" ? "dark:bg-blue-300 bg-blue-300" : " dark:bg-zinc-800 bg-gray-200"
+            )}
             value="4"
             onClick={handleMoodChange}
           >
@@ -326,7 +345,10 @@ function TopCountries() {
           </button>
           <button
           type="button"
-            className={`bg-gray-200 rounded-md dark:bg-zinc-800 p-1 mr-1 mood-button ${currentMood === "2" && "dark:bg-blue-300 bg-blue-300"}`}
+            className={clsx(
+              " dark:hover:bg-blue-200 hover:bg-blue-200 rounded-md  p-1 mr-1 ",
+              currentMood === "2" ? "dark:bg-blue-300 bg-blue-300" : " dark:bg-zinc-800 bg-gray-200"
+            )}
             value="2"
             onClick={handleMoodChange}
           >
@@ -334,7 +356,10 @@ function TopCountries() {
           </button>
           <button
           type="button"
-            className={`bg-gray-200 rounded-md dark:bg-zinc-800 p-1 mr-1 mood-button ${currentMood === "1" && "dark:bg-blue-300 bg-blue-300"}`}
+            className={clsx(
+              " dark:hover:bg-blue-200 hover:bg-blue-200 rounded-md  p-1 mr-1 ",
+              currentMood === "1" ? "dark:bg-blue-300 bg-blue-300" : " dark:bg-zinc-800 bg-gray-200"
+            )}
             value="1"
             onClick={handleMoodChange}
           >
@@ -347,7 +372,7 @@ function TopCountries() {
           </label>
           <textarea
             id="description"
-            className="w-full  bg-zinc-800 h-20 rounded-md border-gray-300 mt-2 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+            className="w-full dark:bg-zinc-800 bg-zinc-400  text-black dark:text-white h-20 rounded-md border-gray-300 mt-2 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
             value={description}
             onChange={handleDescriptionChange}
             />
@@ -364,65 +389,137 @@ function TopCountries() {
     </div>
   );
 }
-
+const getEmoji = (moodValue) => {
+  switch (moodValue) {
+    case 10:
+      return "😁";
+    case 8:
+      return "😊";
+    case 6:
+      return "🙂";
+    case 4:
+      return "😐";
+    case 2:
+      return "😔";
+    case 1:
+      return "😢";
+    default:
+      return "❓";
+  }
+};
+const getLabel = (value) => {
+  switch (value) {
+    case 1:
+      return "Very Sad";
+    case 2:
+      return "Sad";
+    case 4:
+      return "Average";
+    case 6:
+      return "Good";
+    case 8:
+      return "Happy";
+    case 10:
+      return "Very Happy";
+    default:
+      return "Unidentified";
+  }
+};
 function Segmentation() {
-  const getEmoji = (moodValue) => {
-    switch (moodValue) {
-      case 10:
-        return "😁";
-      case 8:
-        return "😊";
-      case 6:
-        return "🙂";
-      case 4:
-        return "😐";
-      case 2:
-        return "😔";
-      case 1:
-        return "😢";
-      default:
-        return "❓";
-    }
-  };
+  
   return (
     <div className="p-4 h-full">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col items-center">
         <div className="text-zinc-700 dark:text-white font-bold">Moods</div>
       </div>
       <div className="-mt-1 text-zinc-600 dark:text-gray-200 italic">most recently </div>
       <dl className="text-sm text-zinc-600 dark:text-white block ">
-        {moods.map((mood) => (
+        {(moods.length>0)?(moods.slice(0, 9).map((mood) => (
           <div key={mood.id}><dt className="font-thin my-2">{getEmoji(mood.mood)}{" : "} {mood.description}</dt></div>
-        ))}
+        ))):(<div className="text-zinc-400 dark:text-zinc-500"> add your moods to see most recent ones here </div> )}
+        
       </dl>
     </div>
   );
 }
 
 function Satisfication() {
-  
+  const percentage = parseInt((averageMood / 10) * 100);
+  const roundedMood = Math.round(averageMood / 2) * 2;
   return (
-    <div className="p-4 h-full">
-      <div className="flex justify-between items-center">
-        <div className="text-zinc-700 dark:text-white font-bold">Satisfication</div>
-      </div>
-      <div className="mt-3 text-zinc-600 dark:text-gray-200">circular meter</div>
-      
-    </div>
+    <div className="p-4 h-full overflow-hidden">
+  <div className="flex flex-col items-center">
+    <div className="text-zinc-700 dark:text-white font-bold">Average Mood</div>
+  </div>
+  <div className="mx-auto mt-4" style={{ width: 275}}>
+    <CircularProgressbarWithChildren
+    circleRatio={0.75}
+      value={percentage}
+      strokeWidth={5}
+      styles={buildStyles({
+        // Rotation of path and trail, in number of turns (0-1)
+        
+        rotation: 1 / 2 + 1 / 8,
+
+        // Whether to use rounded or flat corners on the ends - can use 'butt' or 'round'
+        strokeLinecap: 'round',
+        pathColor: `rgba(31, 81, 255, ${percentage / 100})`,
+        trailColor: '#ffffff',
+        backgroundColor: '#3e98c7',
+        textColor: 'rgba(255, 255, 255)',
+      })}
+    >
+      <div className="text-7xl ">
+        {getEmoji(roundedMood)}
+        </div>
+    </CircularProgressbarWithChildren>
+  </div>
+</div>
+
   );
 }
 
 function AddComponent() {
-  return (
-    <div>
-      <div className="h-full " />
-      <div className="flex flex-col items-center">
-        <div className="text-zinc-700 dark:text-white font-bold mt-3">
-          Pie chart
-        </div>
+  const moodCounts = {};
+moods.forEach((mood) => {
+  const label = getLabel(mood.mood);
+  moodCounts[label] = (moodCounts[label] || 0) + 1;
+});
+
+const moodLabels = Object.keys(moodCounts);
+const moodValues = Object.values(moodCounts);
+const chartData = moodValues.map((value, index) => ({
+  title: moodLabels[index],
+  value: value,
+  color: [
+    '#36A2EB',
+    '#2ecc71',
+    '#FF6384',
+    '#9b59b6',
+    '#e74c3c',
+    '#FFCE56',
+  ][index % 6],
+}));
+
+return (
+  <div>
+    <div className="h-full " />
+    <div className="flex flex-col items-center">
+      <div className="text-zinc-700 dark:text-white font-bold mt-3">
+        Pie chart
       </div>
+      
+        {(moodValues > 0) ? (<div className="mx-auto " style={{ width: 275 }}>  <PieChart
+          data={chartData}
+          className="text-white"
+          label={({ dataEntry }) => `${dataEntry.title}: ${dataEntry.value}%`}
+          labelStyle={{ fontSize: '5px', fontFamily: 'sans-serif' }}
+        /></div>):(  <div className="text-zinc-400 dark:text-zinc-500"> add your moods to see a pie chart </div>    
+        )}
+      
     </div>
-  );
+  </div>
+);
 }
 
   const [user, setUser] = useState(null);
@@ -461,7 +558,6 @@ function AddComponent() {
       moodsCollection,
       where('userId', '==', `${uid}`),
       orderBy('timestamp', 'desc'),
-      limit(7)
     )
   );
   
