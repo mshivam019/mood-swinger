@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useContext } from "react";
 import Footer from "../components/Footer";
 import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
@@ -7,6 +7,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { auth } from "../firebase";
 import { getError } from "../utils/error";
 import startup from "../assets/startup.png";
+import UserContext from "../utils/UserContext";
 import {
   signInWithEmailAndPassword,
   signInWithPopup,
@@ -15,6 +16,7 @@ import {
 
 import Loading from "../components/Loading";
 function Login() {
+  const { setUser } = useContext(UserContext);
   const navigateTo = useNavigate();
   const provider = new GoogleAuthProvider();
 
@@ -24,7 +26,8 @@ function Login() {
     try {
       const res = await signInWithPopup(auth, provider);
       const user = res.user;
-
+      setUser(user);
+      localStorage.setItem("user", JSON.stringify(user));
       navigateTo("/dashboard");
       setLoading(false);
     } catch (err) {
@@ -51,7 +54,8 @@ function Login() {
       ).then((userCredential) => {
         // Signed in
         const user = userCredential.user;
-
+        setUser(user);
+        localStorage.setItem("user", JSON.stringify(user));
         navigateTo("/dashboard");
       });
       setLoading(false);

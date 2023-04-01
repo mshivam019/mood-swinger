@@ -3,7 +3,8 @@ import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import { PieChart } from "react-minimal-pie-chart";
 import clsx from "https://cdn.skypack.dev/clsx@1.1.1";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
+import UserContext from "../utils/UserContext";
 import { signOut, onAuthStateChanged } from "firebase/auth";
 import logo from "../assets/logo.png";
 import { SunIcon, MoonIcon } from "@heroicons/react/24/solid";
@@ -11,7 +12,7 @@ import useDarkSide from "../utils/useDarkSide";
 import SidebarIcons from "../components/sideBarIcons";
 import {
   CircularProgressbarWithChildren,
-  buildStyles,
+  buildStyles
 } from "react-circular-progressbar";
 import { LineChart, Line, XAxis, YAxis, Tooltip } from "recharts";
 import { useCollection } from "react-firebase-hooks/firestore";
@@ -22,17 +23,27 @@ import {
   addDoc,
   query,
   where,
-  serverTimestamp,
   orderBy,
 } from "firebase/firestore";
-import Dasher from "../components/Dasher";
+import Tasks from "../components/Tasks";
 const sidebarItems = [
   [
     { id: "0", title: "Dashboard", notifications: false },
     { id: "4", title: "Tasks", notifications: false },
-    { id: "6", title: "Settings", notifications: false },
   ],
 ];
+function getCurrentDateTime() {
+  const date = new Date();
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  const year = date.getFullYear();
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+  const seconds = date.getSeconds();
+  const meridian = hours >= 12 ? 'PM' : 'AM';
+
+  return `${month}/${day}/${year} ${hours % 12}:${minutes < 10 ? '0' + minutes : minutes}:${seconds < 10 ? '0' + seconds : seconds} ${meridian}`;
+}
 
 function Dashboard() {
   function Sidebar({ onSidebarHide, showSidebar, selected, setSelected }) {
@@ -40,6 +51,8 @@ function Dashboard() {
     const signout = () => {
       signOut(auth)
         .then(() => {
+          localStorage.removeItem("user");
+        setUser(null);
           navigateTo("/");
         })
         .catch((error) => {
@@ -171,11 +184,7 @@ function Dashboard() {
         content = <Dashy />;
         break;
       case "4":
-        content = <div>Tasks content</div>;
-        break;
-
-      case "6":
-        content = <Dasher />;
+        content = <Tasks/>;
         break;
       default:
         content = null;
@@ -334,7 +343,7 @@ function Dashboard() {
         await addDoc(moodsCollection, {
           mood: Number(currentMood),
           userId: uid,
-          timestamp: serverTimestamp(),
+          date: getCurrentDateTime(),
           description: description,
         });
         setCurrentMood("");
@@ -492,11 +501,11 @@ function Dashboard() {
         </div>
         <dl className="text-sm text-zinc-600 dark:text-white block ">
           {moods.length > 0 ? (
-            moods.slice(0, 9).map((mood) => (
+            moods.slice(0, 8).map((mood) => (
               <div key={mood.id}>
                 <dt className="font-thin my-2">
                   {getEmoji(mood.mood)}
-                  {" : "} {mood.description}:{mood.date}
+                  {" : "} {mood.description}
                 </dt>
               </div>
             ))
@@ -614,63 +623,59 @@ function Dashboard() {
     );
   }
 
-  const [user, setUser] = useState(null);
-  const [uid, setUid] = useState(null);
+  // const [user, setUser] = useState(null);
+  // const [uid, setUid] = useState(null);
   const [moods, setMoods] = useState([]);
   const [averageMood, setAverageMood] = useState(null);
-  const [name, setName] = useState(null);
+  // const [name, setName] = useState(null);
   const navigateTo = useNavigate();
   const location = useLocation();
-
+  
+  const { setUser } = useContext(UserContext);
+  const { user } = useContext(UserContext);
+  const uid = user.uid;
+  const name = user.displayName;
   const moodsCollection = collection(db, "moods");
   useEffect(() => {
     // const user = currentUser(auth);
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUser(user);
-        console.log(user.displayName);
-        console.log(user.uid);
-        setUid(user.uid);
-        setName(user.displayName);
-      } else {
-        setUser(null);
-        if (location.pathname === "/dashboard") {
-          toast.error("Please login or Sign up", {
-            toastId: "auth",
-          });
-          navigateTo("/login");
-        }
-      }
-    });
-    return () => unsubscribe();
+    // const unsubscribe = onAuthStateChanged(auth, (user) => {
+    //   if (user) {
+    //     setUser(user);
+    //     console.log(user.displayName);
+    //     console.log(user.uid);
+    //     setUid(user.uid);
+    //     setName(user.displayName);
+    //   } else {
+    //     setUser(null);
+        
+    //   }
+    // });
+    console.log(user.displayName);
+    if(user===null) {
+    if (location.pathname === "/dashboard") {
+      toast.error("Please login or Sign up", {
+        toastId: "auth",
+      });
+      navigateTo("/login");
+    }
+  }
+    // return () => unsubscribe();
   }, []);
 
   const [snapshot] = useCollection(
     query(
       moodsCollection,
       where("userId", "==", `${uid}`),
-      orderBy("timestamp", "desc")
+      orderBy("date", "desc")
     )
   );
 
   useEffect(() => {
-    function convertTimestamp(time) {
-      let dateInMillis = time * 1000;
-      let date = new Date(dateInMillis);
-      let date2 = time.toDate();
-      let mm = date2.getMonth();
-      let dd = date2.getDate();
-      let yyyy = date2.getFullYear();
-
-      date2 = mm + "/" + dd + "/" + yyyy;
-      let myTime = date.toLocaleTimeString();
-      return date2 + " " + myTime;
-    }
+    
     if (snapshot) {
       setMoods(
         snapshot.docs.map((doc) => ({
           id: doc.id,
-          date: convertTimestamp(doc.data().timestamp),
           ...doc.data(),
         }))
       );

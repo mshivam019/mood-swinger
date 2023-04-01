@@ -1,10 +1,11 @@
 import { Disclosure } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { SunIcon, MoonIcon } from "@heroicons/react/24/solid";
-import React, { useState, useEffect } from "react";
+
+import UserContext from "../utils/UserContext";
+import React, { useState, useEffect,useContext } from "react";
 import useDarkSide from "../utils/useDarkSide";
 import logo from "../assets/logo.png";
-import { PieChart, Pie, Cell, Legend, Tooltip } from "recharts";
 import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
 import { auth } from "../firebase";
 import { signOut, onAuthStateChanged } from "firebase/auth";
@@ -12,24 +13,29 @@ function Navbar(props) {
   const navigateTo = useNavigate();
   const location = useLocation();
   const [t, sett] = useState(true);
+  
+  const { setUser } = useContext(UserContext);
+  const { user } = useContext(UserContext);
   const [colorTheme, setTheme] = useDarkSide();
-  const [user, setUser] = useState(null);
+  //const [user, setUser] = useState(null);
   useEffect(() => {
     // const user = currentUser(auth);
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUser(user);
-      } else {
-        setUser(null);
-      }
-    });
+    // const unsubscribe = onAuthStateChanged(auth, (user) => {
+    //   if (user) {
+    //     setUser(user);
+    //   } else {
+    //     setUser(null);
+    //   }
+    // });
     if (location.pathname === "/dashboard") sett(false);
-    return () => unsubscribe();
+    // return () => unsubscribe();
   }, []);
   const [darkmode, Setdarkmode] = useState(true);
   const signout = () => {
     signOut(auth)
       .then(() => {
+        localStorage.removeItem("user");
+        setUser(null);
         navigateTo("/");
       })
       .catch((error) => {

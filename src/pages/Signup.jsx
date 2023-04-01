@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useContext } from "react";
 import Footer from "../components/Footer";
 import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
@@ -7,6 +7,8 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { auth } from "../firebase";
 import { getError } from "../utils/error";
 import startup from "../assets/startup.png";
+
+import UserContext from "../utils/UserContext";
 import {
   updateProfile,
   createUserWithEmailAndPassword,
@@ -16,6 +18,7 @@ import {
 import Loading from "../components/Loading";
 
 function Signup() {
+  const { setUser } = useContext(UserContext);
   const provider = new GoogleAuthProvider();
   const navigateTo = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -24,7 +27,8 @@ function Signup() {
     try {
       const res = await signInWithPopup(auth, provider);
       const user = res.user;
-
+      setUser(user);
+      localStorage.setItem("user", JSON.stringify(user));
       navigateTo("/dashboard");
     } catch (err) {
       toast.error(getError(err));
@@ -53,7 +57,8 @@ function Signup() {
       ).then((userCredential) => {
         // Signed in
         const user = userCredential.user;
-
+        setUser(user);
+        localStorage.setItem("user", JSON.stringify(user));
         updateProfile(user, {
           displayName: name,
         });
