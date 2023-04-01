@@ -469,8 +469,9 @@ function Satisfication() {
         textColor: 'rgba(255, 255, 255)',
       })}
     >
-      <div className="text-7xl ">
+      <div className="text-4xl ">
         {getEmoji(roundedMood)}
+        {percentage}%
         </div>
     </CircularProgressbarWithChildren>
   </div>
@@ -512,7 +513,7 @@ return (
         {(moods.length > 0) ? (<div className="mx-auto " style={{ width: 275 }}>  <PieChart
           data={chartData}
           className="text-white"
-          label={({ dataEntry }) => `${dataEntry.title}: ${dataEntry.value}%`}
+          label={({ dataEntry }) => `${dataEntry.title}`}
           labelStyle={{ fontSize: '5px', fontFamily: 'sans-serif' }}
         /></div>):(  <div className="text-zinc-400 dark:text-zinc-500"> add your moods to see a pie chart </div>    
         )}
