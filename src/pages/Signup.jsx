@@ -24,7 +24,7 @@ function Signup() {
     try {
       const res = await signInWithPopup(auth, provider);
       const user = res.user;
-      
+
       navigateTo("/dashboard");
     } catch (err) {
       toast.error(getError(err));
@@ -53,7 +53,7 @@ function Signup() {
       ).then((userCredential) => {
         // Signed in
         const user = userCredential.user;
-        
+
         updateProfile(user, {
           displayName: name,
         });
@@ -73,7 +73,7 @@ function Signup() {
         <div className="w-full hidden lg:block md:w-1/2 dark:bg-white bg-gray-900 relative">
           <div className="md:5/12 lg:w-5/12">
             <img
-              className="absolute dark:bg-white bg-gray-900 mt-20"
+              className="absolute mt-10 scale-75 -ml-10"
               src={startup}
               alt="image"
               loading="lazy"

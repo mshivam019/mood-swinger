@@ -19,7 +19,6 @@
     "firebase": "^9.18.0",
     "prettier": "^2.8.7",
     "react": "^18.2.0",
-    "react-chartjs-2": "^5.2.0",
     "react-circular-progressbar": "^2.1.0",
     "react-dom": "^18.2.0",
     "react-firebase-hooks": "^5.1.1",

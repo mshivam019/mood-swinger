@@ -4,7 +4,7 @@ import { SunIcon, MoonIcon } from "@heroicons/react/24/solid";
 import React, { useState, useEffect } from "react";
 import useDarkSide from "../utils/useDarkSide";
 import logo from "../assets/logo.png";
-import { PieChart, Pie, Cell, Legend, Tooltip } from 'recharts';
+import { PieChart, Pie, Cell, Legend, Tooltip } from "recharts";
 import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
 import { auth } from "../firebase";
 import { signOut, onAuthStateChanged } from "firebase/auth";
@@ -28,7 +28,6 @@ function Navbar(props) {
   }, []);
   const [darkmode, Setdarkmode] = useState(true);
   const signout = () => {
-   
     signOut(auth)
       .then(() => {
         navigateTo("/");
@@ -138,7 +137,7 @@ function Navbar(props) {
                 </div>
                 <div className="absolute inset-y-0 right-0 flex items-center sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                   <div className="dark:bg-zinc-700 bg-zinc-300 rounded p-2 mr-1">
-                  {renderThemeChanger()}
+                    {renderThemeChanger()}
                   </div>
                   {user ? (
                     <button

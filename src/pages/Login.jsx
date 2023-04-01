@@ -24,7 +24,7 @@ function Login() {
     try {
       const res = await signInWithPopup(auth, provider);
       const user = res.user;
-    
+
       navigateTo("/dashboard");
       setLoading(false);
     } catch (err) {
@@ -51,7 +51,7 @@ function Login() {
       ).then((userCredential) => {
         // Signed in
         const user = userCredential.user;
-        
+
         navigateTo("/dashboard");
       });
       setLoading(false);
@@ -67,7 +67,7 @@ function Login() {
         <div className="w-full hidden  lg:block md:w-1/2 dark:bg-white bg-gray-900 relative">
           <div className="md:5/12 dark:bg-white bg-gray-900 lg:w-5/12">
             <img
-              className="absolute mt-20 ml-14"
+              className="absolute mt-10 scale-75 -ml-10"
               src={startup}
               alt="image"
               loading="lazy"
