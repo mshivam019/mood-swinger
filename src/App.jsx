@@ -8,28 +8,27 @@ import Dashboard from "./pages/Dashboard";
 import UserContext from "./utils/UserContext";
 import { useEffect, useState } from "react";
 function App() {
-  const [user, setUser] = useState(localStorage.user ||null);
+  const [user, setUser] = useState(localStorage.user || null);
   useEffect(() => {
- 
-  const storedUser = localStorage.getItem("user");
+    const storedUser = localStorage.getItem("user");
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
-}, []);
+  }, []);
   return (
     <UserContext.Provider value={{ user, setUser }}>
-    <div>
-      <BrowserRouter>
-        <Routes>
-          <Route exact path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-        </Routes>
-      </BrowserRouter>
-      <ToastContainer theme="colored" position="bottom-center" limit={1} />
-    </div>
-     </UserContext.Provider>
+      <div>
+        <BrowserRouter>
+          <Routes>
+            <Route exact path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+          </Routes>
+        </BrowserRouter>
+        <ToastContainer theme="colored" position="bottom-center" limit={1} />
+      </div>
+    </UserContext.Provider>
   );
 }
 
