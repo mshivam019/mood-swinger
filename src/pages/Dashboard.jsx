@@ -16,6 +16,7 @@ import { collection, query, where, orderBy } from "firebase/firestore";
 import Tasks from "../components/Tasks";
 import Overview from "../components/Overview";
 import Dashy from "../components/Dashy";
+import Settings from "../components/Settings";
 const sidebarItems = [
   [
     { id: "0", title: "Dashboard", notifications: false },
@@ -138,7 +139,7 @@ function Dashboard() {
         content = <Tasks />;
         break;
       case "6":
-        content = <div>Settings content</div>;
+        content = <Settings />;
         break;
       default:
         content = null;
@@ -179,11 +180,11 @@ function Dashboard() {
       }
     };
     return (
-      <div className="flex w-full">
+      <div className="flex w-full ">
         <div className="w-full h-screen hidden sm:block sm:w-20 xl:w-60 flex-shrink-0">
           .
         </div>
-        <div className=" h-screen flex-grow overflow-x-hidden overflow-auto flex flex-wrap content-start px-2">
+        <div className=" h-screen flex-grow overflow-x-hidden overflow-y-hidden flex flex-wrap content-start px-2">
           <div className="w-full sm:flex p-2 items-end">
             <div className="sm:flex-grow flex justify-between">
               <div className="">

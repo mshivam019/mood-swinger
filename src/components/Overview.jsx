@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 const getEmoji = (moodValue) => {
   switch (moodValue) {
     case 10:
@@ -40,28 +40,51 @@ function Graph({ moods }) {
           <div className="flex-grow" />
           <div className="ml-2 text-zinc-600 dark:text-gray-200">Overview</div>
         </div>
-        <div className="font-bold ml-5 text-zinc-600 dark:text-gray-200">
-          Recent to oldest
-        </div>
       </div>
-      <dl className="text-sm text-zinc-600 dark:text-white block ">
-        {moods.moods.length > 0 ? (
-          moods.moods.map((mood) => (
-            <div key={mood.id}>
-              <dt className="font-thin my-2">
-                {getEmoji(mood.mood)}
-                {" : "} {mood.description}
-                {" : "}
-                {mood.date}
-              </dt>
-            </div>
-          ))
-        ) : (
-          <div className="text-zinc-400 dark:text-zinc-500">
-            add your moods to see most recent ones here
-          </div>
-        )}
-      </dl>
+
+      <div class="relative mt-3 overflow-x-auto shadow-md sm:rounded-lg">
+        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+          <thead class="text-xs text-gray-700 uppercase bg-zinc-200 dark:bg-zinc-600 dark:text-gray-300">
+            <tr>
+              <th scope="col" class="px-6 py-3">
+                Mood
+              </th>
+              <th scope="col" class="px-4 py-3">
+                <div class="flex items-center">Description</div>
+              </th>
+              <th scope="col" class="px-4 py-3">
+                <div class="flex items-center">Date</div>
+              </th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {moods.moods.length > 0 ? (
+              moods.moods.map((mood) => (
+                <tr key={mood.id} class="dark:border-neutral-700 border-b ">
+                  <th
+                    scope="row"
+                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                  >
+                    {getEmoji(mood.mood)}
+                  </th>
+                  <td class="px-4 py-4">
+                    <div class="max-w-4xl truncate" title={mood.description}>
+                      {mood.description}
+                    </div>
+                  </td>
+                  <td class="px-4 py-4 text-sm ">{mood.date}</td>
+                </tr>
+              ))
+            ) : (
+              <div className="text-zinc-400 dark:text-zinc-500">
+                add your moods to see them all here
+              </div>
+            )}
+          </tbody>
+        </table>
+      </div>
+
       <div className="flex-grow"></div>
     </div>
   );

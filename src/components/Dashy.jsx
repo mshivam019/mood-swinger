@@ -304,7 +304,7 @@ function MoodList({ moods }) {
       <div className="-mt-1 text-zinc-600 dark:text-gray-200 italic">
         most recently
       </div>
-      <dl className="text-sm text-zinc-600 dark:text-white block ">
+      <dl className="text-sm text-zinc-600 dark:text-white block truncate">
         {moods.moods.length > 0 ? (
           moods.moods.slice(0, 8).map((mood) => (
             <div key={mood.id}>
