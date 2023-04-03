@@ -19,7 +19,6 @@ function Settings() {
       try {
         const storageRef = ref(getStorage(), `users/${user.uid}/profilePhoto`);
         const downloadURL = await getDownloadURL(storageRef);
-        console.log(downloadURL)
         if (downloadURL) {
           setPhotoUrl(downloadURL);
         } else {
@@ -75,8 +74,8 @@ function Settings() {
           method="POST"
           encType="multipart/form-data"
         >
-          <div className="w-full bg-white dark:bg-black rounded-lg mx-auto mt-8 flex overflow-hidden rounded-b-none">
-            <div className="w-1/3 bg-gray-100 dark:bg-zinc-800 p-8 hidden md:inline-block">
+          <div className="w-full bg-white dark:bg-zinc-800 rounded-lg mx-auto mt-8 flex overflow-hidden rounded-b-none">
+            <div className="w-1/3 bg-gray-100 dark:bg-zinc-700 p-8 hidden md:inline-block">
               <h2 className="font-medium text-md  dark:text-gray-200 text-gray-700 mb-4 tracking-wide">
                 Profile Info
               </h2>

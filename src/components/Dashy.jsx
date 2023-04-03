@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useState, useContext } from "react";
 import UserContext from "../utils/UserContext";
 import { db } from "../firebase";
 import clsx from "https://cdn.skypack.dev/clsx@1.1.1";
@@ -7,9 +7,8 @@ import {
   buildStyles,
 } from "react-circular-progressbar";
 import { LineChart, Line, XAxis, YAxis, Tooltip } from "recharts";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc,serverTimestamp } from "firebase/firestore";
 import { PieChart } from "react-minimal-pie-chart";
-
 function getCurrentDateTime() {
   const date = new Date();
   const month = date.getMonth() + 1;
@@ -146,6 +145,7 @@ function MoodEntry() {
       await addDoc(moodsCollection, {
         mood: Number(currentMood),
         userId: uid,
+        timestamp:serverTimestamp(),
         date: getCurrentDateTime(),
         description: description,
       });

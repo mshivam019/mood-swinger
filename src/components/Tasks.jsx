@@ -2,19 +2,20 @@ import React, { useContext, useState, useEffect } from "react";
 import UserContext from "../utils/UserContext";
 import { auth, db } from "../firebase";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
-
-import { collection, addDoc } from "firebase/firestore";
+import _ from "lodash";
+import { collection, query, where, orderBy,addDoc,onSnapshot,serverTimestamp } from "firebase/firestore";
 function Tasks(moods) {
+  const [notes, setNotes] = useState([]);
   return (
     <div className="h-screen flex-grow overflow-x-hidden overflow-auto flex flex-wrap content-start px-2">
-      <div className="w-full p-2 lg:w-1/2">
+      <div className="w-full p-2 lg:w-2/3">
         <div className="rounded-lg bg-zinc-300 dark:bg-zinc-900 sm:h-80 h-60">
           <Quoter />
         </div>
       </div>
-      <div className="w-full p-2 lg:w-1/2">
+      <div className="w-full p-2 lg:w-1/3">
         <div className="rounded-lg bg-zinc-300 dark:bg-zinc-900 h-80">
-          <Badger />
+          <Moodtr moods={moods}/>
         </div>
       </div>
 
@@ -25,12 +26,12 @@ function Tasks(moods) {
       </div>
       <div className="w-full p-2 lg:w-1/3">
         <div className="rounded-lg bg-zinc-300 dark:bg-zinc-900 h-80">
-          <Notes />
+          <Notes notes={notes} setNotes={setNotes}/>
         </div>
       </div>
       <div className="w-full p-2 lg:w-1/3">
         <div className="rounded-lg bg-zinc-300 dark:bg-zinc-900 overflow-hidden h-80">
-          <Profile moods={moods} />
+          <Profile moods={moods} notes={notes}/>
         </div>
       </div>
     </div>
@@ -123,19 +124,76 @@ function Quoter() {
     </div>
   );
 }
-function Badger() {
-  return (
-    <div className="flex p-4 flex-col h-full">
-      <h1 className="text-2xl font-medium mb-4 text-zinc-700 dark:text-white">
-        Your Badges
-      </h1>
+function Moodtr({moods}) {
+  const descriptions = moods.moods.map((mood) => mood.description);
+  const allWords = descriptions.join(" ");
 
+  // Get an array of all the words, and count how many times each word appears
+  const wordCounts = _.countBy(allWords.split(/\s+/));
+
+  // Get the 10 most common words and sort them alphabetically
+  const mostCommonWords = Object.entries(wordCounts)
+    .sort(([wordA, countA], [wordB, countB]) => countB - countA)
+    .slice(0, 8)
+    .map(([word, count]) => word)
+    .sort();
+
+  return (
+    <div className="p-4 h-full overflow-hidden">
+      <h1 className="text-xl font-medium mb-4 text-zinc-700 dark:text-white">
+        Your Mood Triggers
+      </h1>
+      {mostCommonWords.length > 0 ? (
+      <ol className="list-decimal pl-2 space-y-1">
+        {mostCommonWords.map((word) => (
+          <li key={word} className="p-1">
+            <p className="text-zinc-700 dark:text-white ">{word}</p>
+          </li>
+        ))}
+      </ol>
+       ) : (
+        <p>Add some Moods.</p>
+      )}
       <div className="flex-grow" />
     </div>
   );
 }
 
 function NoteMaker() {
+  
+function getCurrentDateTime() {
+  const date = new Date();
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  const year = date.getFullYear();
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+  const seconds = date.getSeconds();
+  const meridian = hours >= 12 ? "PM" : "AM";
+
+  return `${month}/${day}/${year} ${hours % 12}:${
+    minutes < 10 ? "0" + minutes : minutes
+  }:${seconds < 10 ? "0" + seconds : seconds} ${meridian}`;
+}
+
+  const [note, setNote] = useState("");
+  const { user } = useContext(UserContext);
+  const uid=user.uid;
+  const handleAddNote = async () => {
+    if (!note) return;
+
+    try {
+      const docRef = await addDoc(collection(db, "notes"), {
+        content: note,
+        userId: uid,
+        timestamp:serverTimestamp(),
+        date: getCurrentDateTime(),
+      });
+      setNote("");
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
+  };
   return (
     <div className="p-4 h-full">
       <div className="flex flex-col items-center">
@@ -143,26 +201,68 @@ function NoteMaker() {
           Write a note
         </div>
       </div>
-      <div className="-mt-1 text-zinc-600 dark:text-gray-200 italic">
-        most recently
-      </div>
+      <h1 className="text-2xl font-bold mb-4 text-zinc-700 dark:text-white">Add Note</h1>
+      <textarea
+        className="w-full dark:bg-zinc-800 bg-zinc-400 text-black dark:text-white  rounded-md border-gray-300 mt-2 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+        rows={4}
+        placeholder="Write your note here..."
+        value={note}
+        onChange={(e) => setNote(e.target.value)}
+      ></textarea>
+      <button
+        className="bg-blue-500 text-white px-4 py-2 mt-2 rounded hover:bg-blue-600"
+        onClick={handleAddNote}
+      >
+        Add Note
+      </button>
     </div>
   );
 }
 
-function Notes() {
+function Notes({notes,setNotes}) {
+  
+  const { user } = useContext(UserContext);
+  const uid=user.uid;
+  
+
+    useEffect(() => {
+      const notesRef = collection(db, 'notes');
+      const q = query(notesRef,where("userId", "==", `${uid}`),
+      orderBy("timestamp", "desc"));
+  
+      const unsubscribe = onSnapshot(q, (snapshot) => {
+        const notesList = [];
+        snapshot.forEach((doc) => {
+          notesList.push({ id: doc.id, ...doc.data() });
+        });
+        setNotes(notesList);
+      });
+  
+      return () => unsubscribe();
+    }, []);
   return (
-    <div className="p-4 h-full overflow-hidden">
+    <div className="p-4 h-full overflow-x-hidden overflow-y-scroll">
       <div className="flex flex-col items-center">
         <div className="text-zinc-700 dark:text-white font-bold">
           Your Notes
         </div>
       </div>
+      {notes.length > 0 ? (
+        <ol className="space-y-1 list-decimal pl-2">
+          {notes.map((note) => (
+            <li key={note.id} className="p-1">
+              <p className="text-zinc-700 dark:text-white ">{note.content}</p>
+            </li>
+          ))}
+        </ol>
+      ) : (
+        <p>Add some Notes.</p>
+      )}
     </div>
   );
 }
 
-function Profile({ moods }) {
+function Profile({ moods,notes }) {
   const { user } = useContext(UserContext);
   const [photoURL, setPhotoUrl] = useState(null);
 
@@ -172,7 +272,6 @@ function Profile({ moods }) {
       try {
         const storageRef = ref(getStorage(), `users/${user.uid}/profilePhoto`);
         const downloadURL = await getDownloadURL(storageRef);
-        console.log(downloadURL)
         if (downloadURL) {
           setPhotoUrl(downloadURL);
         } else {
@@ -189,11 +288,11 @@ function Profile({ moods }) {
   
   return (
     <div className=" overflow-hidden h-full shadow-xl max-w-s  bg-blue-600">
-      <img src="https://i.imgur.com/dYcYQ7E.png" className="w-full" />
-      <div className="flex justify-center -mt-20">
+      
+      <div className="flex justify-center bg-zinc-900 pb-6">
         <img
           src={photoURL}
-          className="rounded-full w-20 h-20 border-solid border-white border-2 -mt-10"
+          className="rounded-full w-20 h-20 border-solid border-white border-2 mt-8"
         />
       </div>
       <div className="text-center px-3 pb-6 pt-10">
@@ -206,7 +305,7 @@ function Profile({ moods }) {
       </div>
       <div className="flex justify-center pb-3 text-white">
         <div className="text-center mr-3 border-r pr-3">
-          <h2>34</h2>
+          <h2>{notes.length}</h2>
           <span>Notes</span>
         </div>
         <div className="text-center">

@@ -239,7 +239,7 @@ function Dashboard() {
     query(
       moodsCollection,
       where("userId", "==", `${uid}`),
-      orderBy("date", "desc")
+      orderBy("timestamp", "desc")
     )
   );
 
