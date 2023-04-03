@@ -7,6 +7,8 @@ import Signup from "./pages/Signup";
 import Dashboard from "./pages/Dashboard";
 import UserContext from "./utils/UserContext";
 import { useEffect, useState } from "react";
+import { auth, db } from "./firebase";
+
 function App() {
   const [user, setUser] = useState(localStorage.user || null);
   useEffect(() => {
@@ -14,7 +16,7 @@ function App() {
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
-  }, []);
+  }, [auth.currentUser]);
   return (
     <UserContext.Provider value={{ user, setUser }}>
       <div>

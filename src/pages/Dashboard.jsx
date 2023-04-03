@@ -9,7 +9,6 @@ import logo from "../assets/logo.png";
 import { SunIcon, MoonIcon } from "@heroicons/react/24/solid";
 import useDarkSide from "../utils/useDarkSide";
 import SidebarIcons from "../components/sideBarIcons";
-
 import { useCollection } from "react-firebase-hooks/firestore";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { collection, query, where, orderBy } from "firebase/firestore";
@@ -136,7 +135,7 @@ function Dashboard() {
         content = <Overview moods={moods} />;
         break;
       case "4":
-        content = <Tasks />;
+        content = <Tasks  moods={moods}/>;
         break;
       case "6":
         content = <Settings />;

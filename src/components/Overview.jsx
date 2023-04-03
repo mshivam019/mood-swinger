@@ -38,22 +38,22 @@ function Graph({ moods }) {
             Your moods
           </div>
           <div className="flex-grow" />
-          <div className="ml-2 text-zinc-600 dark:text-gray-200">Overview</div>
+          <div className="ml-2 text-zinc-600 dark:text-gray-200">History</div>
         </div>
       </div>
 
-      <div class="relative mt-3 overflow-x-auto shadow-md sm:rounded-lg">
-        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-          <thead class="text-xs text-gray-700 uppercase bg-zinc-200 dark:bg-zinc-600 dark:text-gray-300">
+      <div className="relative mt-3 overflow-x-auto shadow-md sm:rounded-lg">
+        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+          <thead className="text-xs text-gray-700 uppercase bg-zinc-200 dark:bg-zinc-600 dark:text-gray-300">
             <tr>
-              <th scope="col" class="px-6 py-3">
+              <th scope="col" className="px-6 py-3">
                 Mood
               </th>
-              <th scope="col" class="px-4 py-3">
-                <div class="flex items-center">Description</div>
+              <th scope="col" className="px-4 py-3">
+                <div className="flex items-center">Description</div>
               </th>
-              <th scope="col" class="px-4 py-3">
-                <div class="flex items-center">Date</div>
+              <th scope="col" className="px-4 py-3">
+                <div className="flex items-center">Date</div>
               </th>
             </tr>
           </thead>
@@ -61,19 +61,22 @@ function Graph({ moods }) {
           <tbody>
             {moods.moods.length > 0 ? (
               moods.moods.map((mood) => (
-                <tr key={mood.id} class="dark:border-neutral-700 border-b ">
+                <tr key={mood.id} className="dark:border-neutral-700 border-b ">
                   <th
                     scope="row"
-                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                   >
                     {getEmoji(mood.mood)}
                   </th>
-                  <td class="px-4 py-4">
-                    <div class="max-w-4xl truncate" title={mood.description}>
+                  <td className="px-4 py-4">
+                    <div
+                      className="max-w-4xl truncate"
+                      title={mood.description}
+                    >
                       {mood.description}
                     </div>
                   </td>
-                  <td class="px-4 py-4 text-sm ">{mood.date}</td>
+                  <td className="px-4 py-4 text-sm ">{mood.date}</td>
                 </tr>
               ))
             ) : (

@@ -1,9 +1,11 @@
 import React, { useContext, useState, useEffect } from "react";
 import UserContext from "../utils/UserContext";
 import { auth, db } from "../firebase";
-import Loading from "../components/Loading";
-function Tasks() {
-  const { user } = useContext(UserContext);
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
+
+import { collection, addDoc } from "firebase/firestore";
+function Tasks(moods) {
+
   return (
     <div className="h-screen flex-grow overflow-x-hidden overflow-auto flex flex-wrap content-start px-2">
       <div className="w-full p-2 lg:w-1/2">
@@ -29,7 +31,7 @@ function Tasks() {
       </div>
       <div className="w-full p-2 lg:w-1/3">
         <div className="rounded-lg bg-zinc-300 dark:bg-zinc-900 overflow-hidden h-80">
-          <Profile />
+          <Profile  moods={moods}/>
         </div>
       </div>
     </div>
@@ -82,10 +84,10 @@ function Quoter() {
       </div> */}
       </div>
 
-      <blockquote class="text-xl italic  mt-5 font-semibold text-gray-900 dark:text-white">
+      <blockquote className="text-xl italic -mt-4 lg:mt-5 font-semibold text-gray-900 dark:text-white">
         <svg
           aria-hidden="true"
-          class="w-10 h-10 text-gray-400 dark:text-gray-600"
+          className="w-10 h-10 text-gray-400/40 dark:text-gray-600/40"
           viewBox="0 0 24 27"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
@@ -95,11 +97,11 @@ function Quoter() {
             fill="currentColor"
           />
         </svg>
-        <p className="text-lg font-medium my-6">{quote}</p>
+        <p className="text-lg -mt-2 font-medium lg:my-6">{quote}</p>
       </blockquote>
 
       <button
-        className="bg-gray-700 text-white py-2 mt-4 px-4 rounded-md hover:bg-gray-600 transition-colors duration-200"
+        className="bg-blue-600 text-white py-2 lg:mt-4 px-4 rounded-md hover:bg-blue-700 transition-colors duration-200"
         onClick={() => {
           localStorage.removeItem("motivationalQuote");
           localStorage.removeItem("motivationalQuoteTimestamp");
@@ -161,16 +163,48 @@ function Notes() {
   );
 }
 
-function Profile() {
+function Profile({moods}) {
+  const { user } = useContext(UserContext);
+  const [photoURL, setPhotoUrl] = useState("https://via.placeholder.com/150");
+  
+  const currentUser = auth.currentUser;
+  useEffect(() => {
+    
+    async function fetchData() {
+      const storageRef = ref(
+        getStorage(),
+        `users/${auth.currentUser.uid}/profilePhoto`
+      );
+      const downloadURL = await getDownloadURL(storageRef);
+      if (downloadURL) setPhotoUrl(downloadURL);
+    }
+    return () => fetchData();
+  }, [user]);
+  console.log(moods.moods)
   return (
-    <div>
-      <div className="h-full " />
-      <div className="flex flex-col items-center">
-        <div className="text-zinc-700 dark:text-white font-bold mt-3">
-          Profile
-        </div>
-      </div>
+      
+        
+        <div class=" overflow-hidden h-full shadow-xl max-w-s  bg-blue-600">
+  	<img src="https://i.imgur.com/dYcYQ7E.png" class="w-full" />
+    <div class="flex justify-center -mt-20">
+        <img src={photoURL} class="rounded-full w-20 h-20 border-solid border-white border-2 -mt-10"/>		
     </div>
+	<div class="text-center px-3 pb-6 pt-10">
+		<h3 class="text-white text-sm bold mt-2 font-sans">{user.displayName}</h3>
+		<p class="mt-1 font-sans font-light text-white">Joined on: { currentUser.metadata.creationTime}</p>
+	</div>
+  	<div class="flex justify-center pb-3 text-white">
+      <div class="text-center mr-3 border-r pr-3">
+        <h2>34</h2>
+        <span>Notes</span>
+      </div>
+      <div class="text-center">
+        <h2>{moods.moods.length}</h2>
+        <span>Mood Entries</span>
+      </div>
+  	</div>
+</div>
+ 
   );
 }
 

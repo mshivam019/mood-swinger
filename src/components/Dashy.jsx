@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useContext } from "react";
-
 import UserContext from "../utils/UserContext";
 import { db } from "../firebase";
 import clsx from "https://cdn.skypack.dev/clsx@1.1.1";
@@ -9,7 +8,6 @@ import {
 } from "react-circular-progressbar";
 import { LineChart, Line, XAxis, YAxis, Tooltip } from "recharts";
 import { collection, addDoc } from "firebase/firestore";
-
 import { PieChart } from "react-minimal-pie-chart";
 
 function getCurrentDateTime() {
@@ -254,7 +252,7 @@ function MoodEntry() {
             </label>
             <textarea
               id="description"
-              className="w-full dark:bg-zinc-800 bg-zinc-400  text-black dark:text-white h-20 rounded-md border-gray-300 mt-2 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+              className="w-full dark:bg-zinc-800 bg-zinc-400 text-black dark:text-white h-20 rounded-md border-gray-300 mt-2 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
               value={description}
               onChange={handleDescriptionChange}
             />
