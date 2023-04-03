@@ -168,21 +168,25 @@ function Profile({ moods }) {
 
   const currentUser = auth.currentUser;
   useEffect(() => {
-    const fetchData=async ()=> {
-      const storageRef = ref(
-        getStorage(),
-        `users/${user.uid}/profilePhoto`
-      );
-
-      const downloadURL = await getDownloadURL(storageRef);
-      console.log(downloadURL)
-      if (downloadURL){
-      setPhotoUrl(downloadURL);}
-      else setPhotoUrl("https://via.placeholder.com/150")
-    }
-   
-    return () => fetchData();
+    const fetchData = async () => {
+      try {
+        const storageRef = ref(getStorage(), `users/${user.uid}/profilePhoto`);
+        const downloadURL = await getDownloadURL(storageRef);
+        console.log(downloadURL)
+        if (downloadURL) {
+          setPhotoUrl(downloadURL);
+        } else {
+          setPhotoUrl("https://via.placeholder.com/150");
+        }
+      } catch (error) {
+        console.error(error);
+        setPhotoUrl("https://via.placeholder.com/150");
+      }
+    };
+  
+    fetchData();
   }, [user]);
+  
   return (
     <div className=" overflow-hidden h-full shadow-xl max-w-s  bg-blue-600">
       <img src="https://i.imgur.com/dYcYQ7E.png" className="w-full" />

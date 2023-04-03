@@ -15,18 +15,25 @@ function Settings() {
   const [photoURL, setPhotoUrl] = useState(null);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
-    async function fetchData() {
-      const storageRef = ref(
-        getStorage(),
-        `users/${user.uid}/profilePhoto`
-      );
-      const downloadURL = await getDownloadURL(storageRef);
-      console.log(downloadURL);
-      if (downloadURL) setPhotoUrl(downloadURL);
-      else setPhotoURL("https://via.placeholder.com/150")
-    }
-    return () => fetchData();
+    const fetchData = async () => {
+      try {
+        const storageRef = ref(getStorage(), `users/${user.uid}/profilePhoto`);
+        const downloadURL = await getDownloadURL(storageRef);
+        console.log(downloadURL)
+        if (downloadURL) {
+          setPhotoUrl(downloadURL);
+        } else {
+          setPhotoUrl("https://via.placeholder.com/150");
+        }
+      } catch (error) {
+        console.error(error);
+        setPhotoUrl("https://via.placeholder.com/150");
+      }
+    };
+  
+    fetchData();
   }, [photoFile]);
+  
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
     setLoading(true);
