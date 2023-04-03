@@ -289,7 +289,7 @@ function Profile({ moods,notes }) {
   return (
     <div className=" overflow-hidden h-full shadow-xl max-w-s  bg-blue-600">
       
-      <div className="flex justify-center bg-zinc-900 pb-6">
+      <div className="flex justify-center bg-zinc-300 dark:bg-zinc-900 pb-6">
         <img
           src={photoURL}
           className="rounded-full w-20 h-20 border-solid border-white border-2 mt-8"
