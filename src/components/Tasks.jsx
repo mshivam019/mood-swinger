@@ -5,7 +5,6 @@ import { getStorage, ref, getDownloadURL } from "firebase/storage";
 
 import { collection, addDoc } from "firebase/firestore";
 function Tasks(moods) {
-
   return (
     <div className="h-screen flex-grow overflow-x-hidden overflow-auto flex flex-wrap content-start px-2">
       <div className="w-full p-2 lg:w-1/2">
@@ -31,7 +30,7 @@ function Tasks(moods) {
       </div>
       <div className="w-full p-2 lg:w-1/3">
         <div className="rounded-lg bg-zinc-300 dark:bg-zinc-900 overflow-hidden h-80">
-          <Profile  moods={moods}/>
+          <Profile moods={moods} />
         </div>
       </div>
     </div>
@@ -163,48 +162,55 @@ function Notes() {
   );
 }
 
-function Profile({moods}) {
+function Profile({ moods }) {
   const { user } = useContext(UserContext);
-  const [photoURL, setPhotoUrl] = useState("https://via.placeholder.com/150");
-  
+  const [photoURL, setPhotoUrl] = useState(null);
+
   const currentUser = auth.currentUser;
   useEffect(() => {
-    
-    async function fetchData() {
+    const fetchData=async ()=> {
       const storageRef = ref(
         getStorage(),
-        `users/${auth.currentUser.uid}/profilePhoto`
+        `users/${user.uid}/profilePhoto`
       );
+
       const downloadURL = await getDownloadURL(storageRef);
-      if (downloadURL) setPhotoUrl(downloadURL);
+      
+      if (downloadURL){
+      setPhotoUrl(downloadURL);}
+      else setPhotoUrl("https://via.placeholder.com/150")
     }
+   
     return () => fetchData();
   }, [user]);
-  console.log(moods.moods)
   return (
-      
-        
-        <div class=" overflow-hidden h-full shadow-xl max-w-s  bg-blue-600">
-  	<img src="https://i.imgur.com/dYcYQ7E.png" class="w-full" />
-    <div class="flex justify-center -mt-20">
-        <img src={photoURL} class="rounded-full w-20 h-20 border-solid border-white border-2 -mt-10"/>		
+    <div className=" overflow-hidden h-full shadow-xl max-w-s  bg-blue-600">
+      <img src="https://i.imgur.com/dYcYQ7E.png" className="w-full" />
+      <div className="flex justify-center -mt-20">
+        <img
+          src={photoURL}
+          className="rounded-full w-20 h-20 border-solid border-white border-2 -mt-10"
+        />
+      </div>
+      <div className="text-center px-3 pb-6 pt-10">
+        <h3 className="text-white text-sm bold mt-2 font-sans">
+          {user.displayName}
+        </h3>
+        <p className="mt-1 font-sans font-light text-white">
+          Joined on: {currentUser.metadata.creationTime}
+        </p>
+      </div>
+      <div className="flex justify-center pb-3 text-white">
+        <div className="text-center mr-3 border-r pr-3">
+          <h2>34</h2>
+          <span>Notes</span>
+        </div>
+        <div className="text-center">
+          <h2>{moods.moods.length}</h2>
+          <span>Mood Entries</span>
+        </div>
+      </div>
     </div>
-	<div class="text-center px-3 pb-6 pt-10">
-		<h3 class="text-white text-sm bold mt-2 font-sans">{user.displayName}</h3>
-		<p class="mt-1 font-sans font-light text-white">Joined on: { currentUser.metadata.creationTime}</p>
-	</div>
-  	<div class="flex justify-center pb-3 text-white">
-      <div class="text-center mr-3 border-r pr-3">
-        <h2>34</h2>
-        <span>Notes</span>
-      </div>
-      <div class="text-center">
-        <h2>{moods.moods.length}</h2>
-        <span>Mood Entries</span>
-      </div>
-  	</div>
-</div>
- 
   );
 }
 

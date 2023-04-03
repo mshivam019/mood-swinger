@@ -12,16 +12,17 @@ function Settings() {
   const [email, setEmail] = useState(user.email || "");
   const { setUser } = useContext(UserContext);
   const [photoFile, setPhotoFile] = useState(null);
-  const [photoURL, setPhotoUrl] = useState("https://via.placeholder.com/150");
+  const [photoURL, setPhotoUrl] = useState(null);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
     async function fetchData() {
       const storageRef = ref(
         getStorage(),
-        `users/${auth.currentUser.uid}/profilePhoto`
+        `users/${user.uid}/profilePhoto`
       );
       const downloadURL = await getDownloadURL(storageRef);
       if (downloadURL) setPhotoUrl(downloadURL);
+      else setPhotoURL("https://via.placeholder.com/150")
     }
     return () => fetchData();
   }, [photoFile]);

@@ -135,7 +135,7 @@ function Dashboard() {
         content = <Overview moods={moods} />;
         break;
       case "4":
-        content = <Tasks  moods={moods}/>;
+        content = <Tasks moods={moods} />;
         break;
       case "6":
         content = <Settings />;
