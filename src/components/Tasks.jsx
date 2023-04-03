@@ -175,7 +175,7 @@ function Profile({ moods }) {
       );
 
       const downloadURL = await getDownloadURL(storageRef);
-      
+      console.log(downloadURL)
       if (downloadURL){
       setPhotoUrl(downloadURL);}
       else setPhotoUrl("https://via.placeholder.com/150")

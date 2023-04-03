@@ -21,6 +21,7 @@ function Settings() {
         `users/${user.uid}/profilePhoto`
       );
       const downloadURL = await getDownloadURL(storageRef);
+      console.log(downloadURL);
       if (downloadURL) setPhotoUrl(downloadURL);
       else setPhotoURL("https://via.placeholder.com/150")
     }
