@@ -7,7 +7,7 @@ import {
   buildStyles,
 } from "react-circular-progressbar";
 import { LineChart, Line, XAxis, YAxis, Tooltip } from "recharts";
-import { collection, addDoc,serverTimestamp } from "firebase/firestore";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { PieChart } from "react-minimal-pie-chart";
 function getCurrentDateTime() {
   const date = new Date();
@@ -145,7 +145,7 @@ function MoodEntry() {
       await addDoc(moodsCollection, {
         mood: Number(currentMood),
         userId: uid,
-        timestamp:serverTimestamp(),
+        timestamp: serverTimestamp(),
         date: getCurrentDateTime(),
         description: description,
       });

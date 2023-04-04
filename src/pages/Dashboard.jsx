@@ -224,7 +224,6 @@ function Dashboard() {
   const name = user.displayName;
   const moodsCollection = collection(db, "moods");
   useEffect(() => {
-    console.log(user.displayName);
     if (user === null) {
       if (location.pathname === "/dashboard") {
         toast.error("Please login or Sign up", {

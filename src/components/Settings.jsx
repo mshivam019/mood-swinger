@@ -29,10 +29,10 @@ function Settings() {
         setPhotoUrl("https://via.placeholder.com/150");
       }
     };
-  
+
     fetchData();
   }, [photoFile]);
-  
+
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
     setLoading(true);

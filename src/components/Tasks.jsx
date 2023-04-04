@@ -3,7 +3,15 @@ import UserContext from "../utils/UserContext";
 import { auth, db } from "../firebase";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import _ from "lodash";
-import { collection, query, where, orderBy,addDoc,onSnapshot,serverTimestamp } from "firebase/firestore";
+import {
+  collection,
+  query,
+  where,
+  orderBy,
+  addDoc,
+  onSnapshot,
+  serverTimestamp,
+} from "firebase/firestore";
 function Tasks(moods) {
   const [notes, setNotes] = useState([]);
   return (
@@ -15,7 +23,7 @@ function Tasks(moods) {
       </div>
       <div className="w-full p-2 lg:w-1/3">
         <div className="rounded-lg bg-zinc-300 dark:bg-zinc-900 h-80">
-          <Moodtr moods={moods}/>
+          <Moodtr moods={moods} />
         </div>
       </div>
 
@@ -26,12 +34,12 @@ function Tasks(moods) {
       </div>
       <div className="w-full p-2 lg:w-1/3">
         <div className="rounded-lg bg-zinc-300 dark:bg-zinc-900 h-80">
-          <Notes notes={notes} setNotes={setNotes}/>
+          <Notes notes={notes} setNotes={setNotes} />
         </div>
       </div>
       <div className="w-full p-2 lg:w-1/3">
         <div className="rounded-lg bg-zinc-300 dark:bg-zinc-900 overflow-hidden h-80">
-          <Profile moods={moods} notes={notes}/>
+          <Profile moods={moods} notes={notes} />
         </div>
       </div>
     </div>
@@ -97,7 +105,7 @@ function Quoter() {
             fill="currentColor"
           />
         </svg>
-        <p className="text-lg -mt-2 font-medium lg:my-6">{quote}</p>
+        <p className="text-md lg:text-lg -mt-2 font-medium lg:my-6">{quote}</p>
       </blockquote>
 
       <button
@@ -124,7 +132,7 @@ function Quoter() {
     </div>
   );
 }
-function Moodtr({moods}) {
+function Moodtr({ moods }) {
   const descriptions = moods.moods.map((mood) => mood.description);
   const allWords = descriptions.join(" ");
 
@@ -144,14 +152,14 @@ function Moodtr({moods}) {
         Your Mood Triggers
       </h1>
       {mostCommonWords.length > 0 ? (
-      <ol className="list-decimal pl-2 space-y-1">
-        {mostCommonWords.map((word) => (
-          <li key={word} className="p-1">
-            <p className="text-zinc-700 dark:text-white ">{word}</p>
-          </li>
-        ))}
-      </ol>
-       ) : (
+        <ol className="list-decimal pl-2 space-y-1">
+          {mostCommonWords.map((word) => (
+            <li key={word} className="p-1">
+              <p className="text-zinc-700 dark:text-white ">{word}</p>
+            </li>
+          ))}
+        </ol>
+      ) : (
         <p>Add some Moods.</p>
       )}
       <div className="flex-grow" />
@@ -160,25 +168,24 @@ function Moodtr({moods}) {
 }
 
 function NoteMaker() {
-  
-function getCurrentDateTime() {
-  const date = new Date();
-  const month = date.getMonth() + 1;
-  const day = date.getDate();
-  const year = date.getFullYear();
-  const hours = date.getHours();
-  const minutes = date.getMinutes();
-  const seconds = date.getSeconds();
-  const meridian = hours >= 12 ? "PM" : "AM";
+  function getCurrentDateTime() {
+    const date = new Date();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const year = date.getFullYear();
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const seconds = date.getSeconds();
+    const meridian = hours >= 12 ? "PM" : "AM";
 
-  return `${month}/${day}/${year} ${hours % 12}:${
-    minutes < 10 ? "0" + minutes : minutes
-  }:${seconds < 10 ? "0" + seconds : seconds} ${meridian}`;
-}
+    return `${month}/${day}/${year} ${hours % 12}:${
+      minutes < 10 ? "0" + minutes : minutes
+    }:${seconds < 10 ? "0" + seconds : seconds} ${meridian}`;
+  }
 
   const [note, setNote] = useState("");
   const { user } = useContext(UserContext);
-  const uid=user.uid;
+  const uid = user.uid;
   const handleAddNote = async () => {
     if (!note) return;
 
@@ -186,7 +193,7 @@ function getCurrentDateTime() {
       const docRef = await addDoc(collection(db, "notes"), {
         content: note,
         userId: uid,
-        timestamp:serverTimestamp(),
+        timestamp: serverTimestamp(),
         date: getCurrentDateTime(),
       });
       setNote("");
@@ -201,7 +208,9 @@ function getCurrentDateTime() {
           Write a note
         </div>
       </div>
-      <h1 className="text-2xl font-bold mb-4 text-zinc-700 dark:text-white">Add Note</h1>
+      <h1 className="text-2xl font-bold mb-4 text-zinc-700 dark:text-white">
+        Add Note
+      </h1>
       <textarea
         className="w-full dark:bg-zinc-800 bg-zinc-400 text-black dark:text-white  rounded-md border-gray-300 mt-2 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
         rows={4}
@@ -219,27 +228,28 @@ function getCurrentDateTime() {
   );
 }
 
-function Notes({notes,setNotes}) {
-  
+function Notes({ notes, setNotes }) {
   const { user } = useContext(UserContext);
-  const uid=user.uid;
-  
+  const uid = user.uid;
 
-    useEffect(() => {
-      const notesRef = collection(db, 'notes');
-      const q = query(notesRef,where("userId", "==", `${uid}`),
-      orderBy("timestamp", "desc"));
-  
-      const unsubscribe = onSnapshot(q, (snapshot) => {
-        const notesList = [];
-        snapshot.forEach((doc) => {
-          notesList.push({ id: doc.id, ...doc.data() });
-        });
-        setNotes(notesList);
+  useEffect(() => {
+    const notesRef = collection(db, "notes");
+    const q = query(
+      notesRef,
+      where("userId", "==", `${uid}`),
+      orderBy("timestamp", "desc")
+    );
+
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const notesList = [];
+      snapshot.forEach((doc) => {
+        notesList.push({ id: doc.id, ...doc.data() });
       });
-  
-      return () => unsubscribe();
-    }, []);
+      setNotes(notesList);
+    });
+
+    return () => unsubscribe();
+  }, []);
   return (
     <div className="p-4 h-full overflow-x-hidden overflow-y-scroll">
       <div className="flex flex-col items-center">
@@ -262,7 +272,7 @@ function Notes({notes,setNotes}) {
   );
 }
 
-function Profile({ moods,notes }) {
+function Profile({ moods, notes }) {
   const { user } = useContext(UserContext);
   const [photoURL, setPhotoUrl] = useState(null);
 
@@ -282,13 +292,12 @@ function Profile({ moods,notes }) {
         setPhotoUrl("https://via.placeholder.com/150");
       }
     };
-  
+
     fetchData();
   }, [user]);
-  
+
   return (
     <div className=" overflow-hidden h-full shadow-xl max-w-s  bg-blue-600">
-      
       <div className="flex justify-center bg-zinc-300 dark:bg-zinc-900 pb-6">
         <img
           src={photoURL}
