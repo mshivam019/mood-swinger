@@ -74,7 +74,6 @@ function Login() {
               className="absolute mt-10 scale-75 -ml-10"
               src={startup}
               alt="image"
-              loading="lazy"
               width=""
               height=""
             />
