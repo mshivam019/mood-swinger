@@ -116,6 +116,10 @@ function Signup() {
                   autoFocus
                   {...register("name", {
                     required: "Please enter name",
+                    minLength: {
+                      value: 2,
+                      message: "Name should be more than 2 chars",
+                    },
                   })}
                 />
                 {errors.name && (
