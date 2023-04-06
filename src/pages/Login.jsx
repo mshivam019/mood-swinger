@@ -67,7 +67,7 @@ function Login() {
   return (
     <div>
       <Navbar {...props} />
-      <div className="flex flex-col md:flex-row">
+      <div className="flex flex-col md:flex-row overflow-hidden">
         <div className="w-full hidden  lg:block md:w-1/2 dark:bg-white bg-gray-900 relative">
           <div className="md:5/12 dark:bg-white bg-gray-900 lg:w-5/12">
             <img
