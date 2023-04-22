@@ -134,6 +134,7 @@ function Settings() {
                   <input
                     type="file"
                     name="photo"
+                    accept="image/*"
                     onChange={(e) => setPhotoFile(e.target.files[0])}
                     className="absolute inset-0 w-full h-full opacity-0 cursor-pointer "
                   />{" "}
