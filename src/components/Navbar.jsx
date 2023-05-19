@@ -8,7 +8,7 @@ import useDarkSide from "../utils/useDarkSide";
 import logo from "../assets/logo.png";
 import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
 import { auth } from "../firebase";
-import { signOut, onAuthStateChanged } from "firebase/auth";
+import { signOut } from "firebase/auth";
 function Navbar(props) {
   const navigateTo = useNavigate();
   const location = useLocation();
@@ -40,18 +40,26 @@ function Navbar(props) {
   };
 
   const renderThemeChanger = () => {
-    return (
-      <button onClick={toggleDarkMode}>
-        {colorTheme === "dark" ? (
-          <SunIcon className="w-6 h-6 text-yellow-500" />
-        ) : (
-          <MoonIcon className="w-6 h-6 text-gray-900" />
-        )}
-      </button>
-    );
+    if (colorTheme === "dark") {
+      return (
+        <SunIcon
+          className="w-6 h-6 text-yellow-500 "
+          role="button"
+          onClick={() => toggleDarkMode()}
+        />
+      );
+    } else {
+      return (
+        <MoonIcon
+          className="w-6 h-6  text-gray-900 "
+          role="button"
+          onClick={() => toggleDarkMode()}
+        />
+      );
+    }
   };
   return (
-    <div classame="bg-white dark:bg-gray-900">
+    <div className="bg-white dark:bg-gray-900">
       <Disclosure
         as="nav"
         className="fixed z-20 w-full bg-white/90 dark:bg-gray-900/80 backdrop-blur navbar shadow-2xl shadow-gray-600/5 border-b border-gray-100 dark:border-gray-800 peer-checked:navbar-active dark:shadow-none"
