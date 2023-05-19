@@ -20,7 +20,6 @@ function Navbar(props) {
   useEffect(() => {
     if (location.pathname === "/dashboard") sett(false);
   }, []);
-  const [darkmode, Setdarkmode] = useState(true);
   const signout = () => {
     signOut(auth)
       .then(() => {
@@ -33,33 +32,23 @@ function Navbar(props) {
         console.error(error);
       });
   };
+
   const toggleDarkMode = () => {
-    if (darkmode === false) {
-      setTheme("dark");
-      Setdarkmode(true);
-    } else {
-      setTheme("light");
-      Setdarkmode(false);
-    }
+    const newTheme = colorTheme === "dark" ? "light" : "dark";
+    localStorage.theme = newTheme;
+    setTheme(newTheme);
   };
+
   const renderThemeChanger = () => {
-    if (darkmode) {
-      return (
-        <SunIcon
-          className="w-6 h-6  text-yellow-500 "
-          role="button"
-          onClick={() => toggleDarkMode()}
-        />
-      );
-    } else {
-      return (
-        <MoonIcon
-          className="w-6 h-6  text-gray-900 "
-          role="button"
-          onClick={() => toggleDarkMode()}
-        />
-      );
-    }
+    return (
+      <button onClick={toggleDarkMode}>
+        {colorTheme === "dark" ? (
+          <SunIcon className="w-6 h-6 text-yellow-500" />
+        ) : (
+          <MoonIcon className="w-6 h-6 text-gray-900" />
+        )}
+      </button>
+    );
   };
   return (
     <div classame="bg-white dark:bg-gray-900">
