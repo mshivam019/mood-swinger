@@ -110,9 +110,11 @@ function Dashboard() {
           sidebar();
           onClick(id);
         }}
-        onKeyPress={() => {
-          sidebar();
-          onClick(id);
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            sidebar();
+            onClick(id);
+          }
         }}
         role="button"
         tabIndex="0"
