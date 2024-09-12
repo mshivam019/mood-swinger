@@ -110,6 +110,12 @@ function Dashboard() {
           sidebar();
           onClick(id);
         }}
+        onKeyPress={() => {
+          sidebar();
+          onClick(id);
+        }}
+        role="button"
+        tabIndex="0"
       >
         <SidebarIcons id={id} />
         <div className="block sm:hidden xl:block ml-2 pb-2">{title}</div>
